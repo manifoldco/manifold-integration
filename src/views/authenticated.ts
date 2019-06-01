@@ -1,4 +1,5 @@
 import { htm } from '@zeit/integration-utils';
+import { TEST_PROVISION } from '../constants';
 
 export default (user: Manifold.User) => htm`
 <Page>
@@ -20,10 +21,6 @@ export default (user: Manifold.User) => htm`
     </Fieldset>
   </Container>
 
-  <Box>
-    <Button action="test-provision">Test Provisions</Button>
-  </Box>
-
   <Fieldset>
     <FsContent>
       <H1>Provisioning test</H1>
@@ -36,7 +33,7 @@ export default (user: Manifold.User) => htm`
         </Select>
     </FsContent>
     <FsContent>
-      <Button action="test-provision">Provision Now</Button>
+      <Button action="${TEST_PROVISION}">Provision Now</Button>
     </FsContent>
   </Fieldset>
 </Page>
