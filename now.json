@@ -1,5 +1,13 @@
 {
   "name": "manifold-zeitgeist",
   "version": 2,
-  "builds": [{ "src": "./src/index.ts", "use": "@now/node" }]
+  "builds": [{ "src": "./src/index.ts", "use": "@now/node" }],
+  "routes": [
+    { "src": "/", "dest": "src/index.ts" },
+    { "src": "/login", "dest": "src/oauth.ts" },
+    { "src": "/login/oauth", "dest": "src/oauthCallback.ts" }
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  }
 }

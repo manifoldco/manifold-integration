@@ -1,6 +1,13 @@
 {
   "name": "manifold-zeitgeist",
+  "scripts": {
+    "dev": "manifold run -- now dev .",
+    "deploy": "manifold run -- now -e ROOT_URL -e ZEIT_CLIENT_ID -e MANIFOLD_OAUTH_URL"
+  },
   "dependencies": {
-    "@zeit/integration-utils": "latest"
+    "@types/node": "^12.0.4",
+    "@zeit/integration-utils": "latest",
+    "cookie": "^0.4.0",
+    "node-fetch": "^2.6.0"
   }
 }
