@@ -1,23 +1,35 @@
 import { htm } from '@zeit/integration-utils';
+import products from '../data/products';
 
-export default () =>
-  htm`
+export default () => htm`
   <Page>
-
-        <H2>Select a service</H2>
-
-        <Button action="">Provision service</Button>
-
-        <Fieldset>
+    <Container>
+      <H1>Manifold services</H1>
+      ${products.map(
+        ({ label, logoUrl, name, tagline, tags }) => htm`
+        <Fieldset height="100%" margin="0">
           <FsContent>
-            <H2>Select Plan</H2>
-            <Select name="plan" value="selectedValue">
-              <Option value="free" caption="Free — $0" />
-            </Select>
+            <Box display="grid" gridColumnGap="1.25rem" gridTemplateColumns="min-content auto min-content">
+              <Box height="64px" borderRadius="0.375rem" overflow="hidden" >
+                <Img src="${logoUrl}" width="64" height="64" />
+              </Box>
+              <Box>
+                <H2>
+                  ${name}
+                  <Box fontSize="0.75rem" textTransform="uppercase" fontWeight="500" letterSpacing="1px" color="#777">
+                    ${[...tags].sort((a, b) => a.localeCompare(b)).join(' / ')}
+                  </Box>
+                </H2>
+                <P>${tagline}</P>
+              </Box>
+            </Box>
+            <Box display="flex" justifyContent="flex-end" marginTop="0.5rem">
+              <Button small action="${`product-${label}`}">Create resource →</Button>
+            </Box>
           </FsContent>
-          <FsFooter>
-            <Button>Provision</Button>
-          </FsFooter>
         </Fieldset>
+        `
+      )}
+    </Container>
   </Page>
 `;

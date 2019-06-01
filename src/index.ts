@@ -4,8 +4,9 @@ import { completeOAuth } from './controllers/zeitOAuth';
 import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
 import productView from './views/product';
+import selectProductView from './views/select-product';
 import testProvisionView from './views/test-provision';
-import { TEST_PROVISION, PRODUCT_PAGE } from './constants';
+import { TEST_PROVISION, PRODUCT_PAGE, SELECT_PRODUCT } from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
 import { Router } from './api/router';
@@ -38,8 +39,9 @@ export default withUiHook(
 
         return new Router({
           routes: {
-            [TEST_PROVISION]: testProvisionView,
             [PRODUCT_PAGE]: productView,
+            [SELECT_PRODUCT]: selectProductView,
+            [TEST_PROVISION]: testProvisionView,
           },
           client,
           payload,
