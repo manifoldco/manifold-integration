@@ -1,5 +1,11 @@
 {
-  "name": "manifold-zeitgeist",
+  "name": "manifold-integration",
+  "alias": "manifold-integration.zeit.sh",
   "version": 2,
-  "builds": [{ "src": "./src/index.ts", "use": "@now/node" }]
+  "routes": [
+    { "src": "/", "dest": "src/index.ts" },
+    { "src": "/static/(.*)", "dest": "static/$1" },
+    { "src": "/(.*)", "dest": "src/endpoints/$1.ts" }
+  ],
+  "builds": [{ "src": "./src/index.ts", "use": "@now/node@canary" }]
 }
