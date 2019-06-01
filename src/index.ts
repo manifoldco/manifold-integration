@@ -3,6 +3,7 @@ import { withUiHook } from '@zeit/integration-utils';
 import { completeOAuth } from './controllers/zeitOAuth';
 import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
+import testProvisionView from './views/test-provision';
 
 export default withUiHook(
   async ({ zeitClient, payload }): Promise<string> => {
@@ -14,13 +15,15 @@ export default withUiHook(
       metadata = await zeitClient.getMetadata();
     }
 
-    if (metadata.manifoldToken) {
-      authenticatedView();
+    if (!metadata.manifoldToken) {
+        return unauthenticatedView();
     }
 
     switch (action) {
+      case "test-provision":
+        return testProvisionView();
       default:
-        return unauthenticatedView();
+        return authenticatedView();
     }
   }
 );
