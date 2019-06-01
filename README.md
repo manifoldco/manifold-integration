@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/DadXYUR.png" width="103"/>
+<img src="./docs/logo.png" width="103"/>
 
 # ZEIT + Manifold
 
