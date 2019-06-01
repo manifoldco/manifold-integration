@@ -3,9 +3,11 @@ import { withUiHook } from '@zeit/integration-utils';
 import { completeOAuth } from './controllers/zeitOAuth';
 import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
+import productView from './views/product';
 import testProvisionView from './views/test-provision';
 import { Manifold } from './api/manifold';
 import error from './views/error';
+import { router } from './api/router';
 
 const { MANIFOLD_IDENTITY_URL } = process.env;
 
@@ -33,22 +35,20 @@ export default withUiHook(
       try {
         const user = await client.getSelf();
 
-        if (user instanceof Error) {
+        const err = user as Manifold.Error;
+        if (err.message) {
           delete metadata.manifoldToken;
           zeitClient.setMetadata(metadata);
           return unauthenticatedView(payload);
         }
+        const casted = user as Manifold.User;
 
-        switch (action) {
-          case 'test-provision':
-            return testProvisionView();
-          default:
-            return authenticatedView(user);
-        }
+        return router({
+          'test-provision': () => testProvisionView(),
+          'product-([a-z0-9][a-z0-9\\-\\_]{1,128})': (_, params) => productView(_, params),
+        }, authenticatedView(casted), action);
       } catch (err) {
-        delete metadata.manifoldToken;
-        zeitClient.setMetadata(metadata);
-        return unauthenticatedView(payload);
+        return error('500', err);
       }
     }
 

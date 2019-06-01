@@ -21,9 +21,9 @@ declare namespace Manifold {
     name: string;
     tagline: string;
     logoUrl: string;
-    valueProps: [ValueProp];
-    tags: [Tag];
-    plans: [Manifold.Plan];
+    valueProps: ValueProp[];
+    tags: Tag[];
+    plans: Manifold.Plan[];
   }
 
   interface Plan {
@@ -31,8 +31,8 @@ declare namespace Manifold {
     label: string;
     name: string;
     cost: number;
-    regions: [string];
-    features: [ProductFeatures];
+    regions: string[];
+    features: ProductFeatures[];
   }
 
   interface AuthToken {

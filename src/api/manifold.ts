@@ -22,7 +22,7 @@ export class Manifold {
     this.bearerToken = config.bearerToken;
   }
 
-  async getTokensOAuth(code: string, state: string): Promise<Manifold.AuthToken | Error> {
+  async getTokensOAuth(code: string, state: string): Promise<Manifold.AuthToken | Manifold.Error> {
     const response = await fetch(
       `${this.identityUrl}${routes.identity.login}`,
       {
@@ -42,7 +42,7 @@ export class Manifold {
     return response.json();
   }
 
-  async getSelf(): Promise<Manifold.User | Error> {
+  async getSelf(): Promise<Manifold.User | Manifold.Error> {
     const response = await fetch(
       `${this.identityUrl}${routes.identity.self}`,
       {

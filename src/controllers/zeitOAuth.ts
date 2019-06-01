@@ -14,12 +14,14 @@ export const completeOAuth = async (
     payload.query.state as string
   );
 
-  if (tokenInfo instanceof Error) {
-    throw new Error(`Could not authenticate you into manifold: ${tokenInfo.message}`);
+  const err = tokenInfo as Manifold.Error;
+  if (err.message) {
+    throw new Error(`Could not authenticate you into manifold: ${err.message}`);
   }
+  const casted = tokenInfo as Manifold.AuthToken;
 
   await zeitClient.setMetadata({
       ...metadata,
-      manifoldToken: tokenInfo.body.token,
+      manifoldToken: casted.body.token,
   });
 };
