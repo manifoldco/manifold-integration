@@ -13,6 +13,16 @@ const routes = {
   },
 };
 
+async function toJSON(response: any): Promise<any> {
+  const payload = await response.json();
+
+  if (!response.ok) {
+    throw new Error(payload.message)
+  }
+
+  return payload
+}
+
 export class Manifold {
   identityUrl: string;
   bearerToken: string | undefined;
@@ -22,7 +32,7 @@ export class Manifold {
     this.bearerToken = config.bearerToken;
   }
 
-  async getTokensOAuth(code: string, state: string): Promise<Manifold.AuthToken | Error> {
+  async getTokensOAuth(code: string, state: string): Promise<Manifold.AuthToken> {
     const response = await fetch(
       `${this.identityUrl}${routes.identity.login}`,
       {
@@ -38,11 +48,10 @@ export class Manifold {
         }),
       }
     );
-
-    return response.json();
+    return toJSON(response);
   }
 
-  async getSelf(): Promise<Manifold.User | Error> {
+  async getSelf(): Promise<Manifold.User> {
     const response = await fetch(
       `${this.identityUrl}${routes.identity.self}`,
       {
@@ -54,7 +63,6 @@ export class Manifold {
         },
       }
     );
-
-    return response.json();
+    return toJSON(response);
   }
 }

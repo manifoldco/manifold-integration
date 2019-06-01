@@ -33,12 +33,6 @@ export default withUiHook(
       try {
         const user = await client.getSelf();
 
-        if (user instanceof Error) {
-          delete metadata.manifoldToken;
-          zeitClient.setMetadata(metadata);
-          return unauthenticatedView(payload);
-        }
-
         switch (action) {
           case 'test-provision':
             return testProvisionView();
