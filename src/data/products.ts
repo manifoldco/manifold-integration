@@ -43,6 +43,7 @@ export default [
         id: '2351kz26adxddkbewu644wx4b186y',
         label: 'manifold-developer',
         name: 'FREE',
+        cost: 0,
         regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
         features: [
           {
@@ -117,6 +118,7 @@ export default [
         id: '23558gd5kaw5z462e3mvaknj5veuj',
         label: 'quaco',
         name: 'Quaco',
+        cost: 0,
         regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
         features: [
           {
@@ -176,6 +178,7 @@ export default [
         id: '235b6p9zn3kg7k8q4tmrqqgjtdd4c',
         label: '250mb-2018-05-04',
         name: '250 MB',
+        cost: 0,
         regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
         features: [
           {
@@ -238,6 +241,7 @@ export default [
         id: '23548zx505a0hmd1c0dtye3ychcy8',
         label: 'little-lemur',
         name: 'Little Lemur',
+        cost: 0,
         regions: [
           '235mhkk15ky7ha9qpu4gazrqjt2gr',
           '235m2c51y0625vvtk6ptf55bhpkty',
@@ -319,6 +323,7 @@ export default [
         id: '2355xq63b60wqpxd1y2gewh9bckgr',
         label: 'developer',
         name: 'Developer',
+        cost: 0,
         regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
         features: [
           {
@@ -390,6 +395,7 @@ export default [
         id: '2352r0qupx0d1jac6tqe3k89t6ed0',
         label: 'free',
         name: 'Free',
+        cost: 0,
         regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
         features: [
           {
@@ -456,6 +462,7 @@ export default [
         id: '2350gc6tjv283zydecnf668b77pf6',
         label: 'sandbox',
         name: 'Sandbox',
+        cost: 0,
         regions: [
           '235mhkk15ky7ha9qpu4gazrqjt2gr',
           '235nu2c0z73hq1f9qby444nnnq1fu',
@@ -522,6 +529,7 @@ export default [
         id: '2356u9mx4jtexmtmx6rnpamhwp9n6',
         label: 'free',
         name: 'Free',
+        cost: 0,
         regions: [
           '235mhkk15ky7ha9qpu4gazrqjt2gr',
           '235m2c51y0625vvtk6ptf55bhpkty',
@@ -575,6 +583,7 @@ export default [
         id: '2351a603m8yjd1e5wpz2jmhad2qgw',
         label: 'free',
         name: 'Free',
+        cost: 0,
         regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
         features: [
           {
@@ -636,6 +645,7 @@ export default [
         id: '235c1wb4n4g52wxghnaddk9n3wb7p',
         label: 'nano',
         name: 'Nano',
+        cost: 0,
         regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
         features: [
           {
@@ -690,6 +700,7 @@ export default [
         id: '2358y0eya5z9e1jx486czye2wn8va',
         label: 'free',
         name: 'Free',
+        cost: 0,
         regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
         features: [
           {

@@ -26,6 +26,7 @@ declare namespace Manifold {
     id: string;
     label: string;
     name: string;
+    cost: number;
     regions: [string];
     features: [ProductFeatures];
   }
