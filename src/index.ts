@@ -7,7 +7,6 @@ import testProvisionView from './views/test-provision';
 import { TEST_PROVISION } from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
-// import unauthenticatedView from './views/unauthenticated';
 
 const { MANIFOLD_IDENTITY_URL } = process.env;
 

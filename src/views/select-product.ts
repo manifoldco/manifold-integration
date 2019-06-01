@@ -1,5 +1,4 @@
 import { htm } from '@zeit/integration-utils';
-import { SELECT_PLAN } from '../constants';
 
 export default () =>
   htm`
@@ -8,8 +7,6 @@ export default () =>
         <H2>Select a service</H2>
 
         <Button action="">Provision service</Button>
-
-        <Button action="${SELECT_PLAN}">Select Plan</Button>
 
         <Fieldset>
           <FsContent>

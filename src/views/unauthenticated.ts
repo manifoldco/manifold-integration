@@ -7,7 +7,10 @@ export default (payload: UiHookPayload) => {
 
   return htm`
     <Page>
-      <Link href=${connectUrl}>Connect With Manifold</Link>
+      <Box text-align="center" margin-top="4rem">
+        <H1>Connect with your Manifold account</H1>
+        <Link href=${connectUrl}>Connect with Manifold</Link>
+      </Box>
     </Page>
   `;
 };
