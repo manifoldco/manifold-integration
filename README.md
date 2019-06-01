@@ -12,4 +12,4 @@ npm i
 npm run dev
 ```
 
-App will be up at `localhost:5005`
+App will be up at `localhost:3000`

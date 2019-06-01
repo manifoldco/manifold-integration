@@ -8,7 +8,7 @@ export const completeOAuth = async (
   zeitClient: ZeitClient,
   manifoldClient: Manifold,
   metadata: Metadata
-) : Promise<void> => {
+): Promise<void> => {
   try {
     const tokenInfo = await manifoldClient.getTokensOAuth(
       payload.query.code as string,
@@ -16,8 +16,8 @@ export const completeOAuth = async (
     );
 
     await zeitClient.setMetadata({
-        ...metadata,
-        manifoldToken: tokenInfo.body.token,
+      ...metadata,
+      manifoldToken: tokenInfo.body.token,
     });
   } catch (e) {
     throw new Error(`Could not authenticate you into manifold: ${e.message}`);
