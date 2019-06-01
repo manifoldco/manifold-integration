@@ -3,6 +3,7 @@ import { withUiHook } from '@zeit/integration-utils';
 import { completeOAuth } from './controllers/zeitOAuth';
 import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
+import testProvisionView from './views/test-provision';
 import { Manifold } from './api/manifold';
 import error from './views/error';
 
@@ -39,6 +40,8 @@ export default withUiHook(
         }
 
         switch (action) {
+          case 'test-provision':
+            return testProvisionView();
           default:
             return authenticatedView(user);
         }
