@@ -1,7 +1,13 @@
-import { htm } from '@zeit/integration-utils';
+import { htm, UiHookPayload } from '@zeit/integration-utils';
 
-export default () => htm`
-<Page>
-  You are not logged in... What?
-</Page>
-`;
+const { ROOT_URL } = process.env;
+
+export default (payload: UiHookPayload) => {
+  const connectUrl = `${ROOT_URL}/login/oauth?next=${encodeURIComponent(payload.installationUrl)}`;
+
+  return htm`
+    <Page>
+      <Link href=${connectUrl}>Connect With Manifold</Link>
+    </Page>
+  `;
+};
