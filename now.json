@@ -1,0 +1,5 @@
+{
+  "name": "manifold-zeitgeist",
+  "version": 2,
+  "builds": [{ "src": "./src/index.ts", "use": "@now/node" }]
+}

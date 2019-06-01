@@ -1,0 +1,6 @@
+{
+  "name": "manifold-zeitgeist",
+  "dependencies": {
+    "@zeit/integration-utils": "latest"
+  }
+}
