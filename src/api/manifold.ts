@@ -13,14 +13,14 @@ const routes = {
   },
 };
 
-async function toJSON(response: any): Promise<any> {
+async function toJSON<T>(response: Response): Promise<T> {
   const payload = await response.json();
 
   if (!response.ok) {
-    throw new Error(payload.message)
+    throw new Error(payload.message);
   }
 
-  return payload
+  return payload;
 }
 
 export class Manifold {
@@ -48,7 +48,8 @@ export class Manifold {
         }),
       }
     );
-    return toJSON(response);
+
+    return toJSON<Manifold.AuthToken>(response);
   }
 
   async getSelf(): Promise<Manifold.User> {
@@ -63,6 +64,6 @@ export class Manifold {
         },
       }
     );
-    return toJSON(response);
+    return toJSON<Manifold.User>(response);
   }
 }
