@@ -1,27 +1,26 @@
-import { withUiHook, htm as html } from '@zeit/integration-utils';
+import { withUiHook } from '@zeit/integration-utils';
 
 import { completeOAuth } from './controllers/zeitOAuth';
+import authenticatedView from './views/authenticated';
+import unauthenticatedView from './views/unauthenticated';
 
-export default withUiHook(async ({ zeitClient, payload }): Promise<string> => {
-  let metadata = await zeitClient.getMetadata();
-  // const { action, projectId } = payload;
+export default withUiHook(
+  async ({ zeitClient, payload }): Promise<string> => {
+    let metadata = await zeitClient.getMetadata();
+    const { action /* , projectId */ } = payload;
 
-  if (!metadata.manifoldToken && payload.query.code) {
-    await completeOAuth(payload, zeitClient, metadata);
-    metadata = await zeitClient.getMetadata();
+    if (!metadata.manifoldToken && payload.query.code) {
+      await completeOAuth(payload, zeitClient, metadata);
+      metadata = await zeitClient.getMetadata();
+    }
+
+    if (metadata.manifoldToken) {
+      authenticatedView();
+    }
+
+    switch (action) {
+      default:
+        return unauthenticatedView();
+    }
   }
-
-  if (metadata.manifoldToken) {
-    return html`
-      <Page>
-          Logged in with oauth on Manifold
-      </Page>
-    `;
-  }
-
-  return html`
-    <Page>
-      You are not logged in... What?
-    </Page>
-  `;
-});
+);
