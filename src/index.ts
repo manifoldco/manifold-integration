@@ -36,11 +36,13 @@ export default withUiHook(
         const user = await client.getSelf();
 
         return router({
-          'test-provision': () => testProvisionView(),
-          'product-([a-z0-9][a-z0-9\\-\\_]{1,128})': (_, params) => productView(_, params),
+          'test-provision': testProvisionView,
+          'product-([a-z0-9][a-z0-9\\-\\_]{1,128})': productView,
         }, authenticatedView(user), action);
       } catch (err) {
-        return error('500', err);
+        delete metadata.manifoldToken;
+        await zeitClient.setMetadata(metadata);
+        return unauthenticatedView(payload);
       }
     }
 
