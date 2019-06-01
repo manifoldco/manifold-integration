@@ -4,8 +4,10 @@ import { completeOAuth } from './controllers/zeitOAuth';
 import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
 import testProvisionView from './views/test-provision';
+import { TEST_PROVISION } from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
+// import unauthenticatedView from './views/unauthenticated';
 
 const { MANIFOLD_IDENTITY_URL } = process.env;
 
@@ -34,7 +36,7 @@ export default withUiHook(
         const user = await client.getSelf();
 
         switch (action) {
-          case 'test-provision':
+          case TEST_PROVISION:
             return testProvisionView();
           default:
             return authenticatedView(user);
