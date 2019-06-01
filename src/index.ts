@@ -5,6 +5,7 @@ import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
 import productView from './views/product';
 import testProvisionView from './views/test-provision';
+import { TEST_PROVISION, PRODUCT_PAGE } from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
 import { router } from './api/router';
@@ -36,8 +37,8 @@ export default withUiHook(
         const user = await client.getSelf();
 
         return router({
-          'test-provision': testProvisionView,
-          'product-([a-z0-9][a-z0-9\\-\\_]{1,128})': productView,
+          [TEST_PROVISION]: testProvisionView,
+          [PRODUCT_PAGE]: productView,
         }, authenticatedView(user), action);
       } catch (err) {
         delete metadata.manifoldToken;
