@@ -1,5 +1,6 @@
 {
-  "name": "manifold-zeitgeist",
+  "name": "manifold-integration",
+  "alias": "manifold-integration.zeit.sh",
   "version": 2,
   "builds": [{ "src": "./src/index.ts", "use": "@now/node" }],
   "routes": [

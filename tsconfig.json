@@ -1,22 +1,28 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "baseUrl": "src",
+    "declaration": false,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["dom", "esnext"],
     "module": "CommonJS",
     "moduleResolution": "node",
-    "outDir": "./lib",
-    "resolveJsonModule": true,
-    "strictNullChecks": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "outDir": "dist",
     "strict": true,
-    "target": "ES2017",
-    "typeRoots": [
-      "./types",
-      "./node_modules/@types"
-    ]
+    "strictNullChecks": true,
+    "target": "esnext",
+    "types": ["node"],
+    "paths": {
+      "*": ["node_modules/*", "*"]
+    }
   },
-  "include": ["./src", "./types"]
+  "include": ["./src", "./types"],
+  "exclude": ["node_modules"]
 }
