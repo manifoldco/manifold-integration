@@ -24,7 +24,7 @@ export default () => htm`
               </Box>
             </Box>
             <Box display="flex" justifyContent="flex-end" marginTop="0.5rem">
-              <Button small action="product-${label}">Create resource →</Button>
+              <Button small action="${`product-${label}`}">Create resource →</Button>
             </Box>
           </FsContent>
         </Fieldset>
