@@ -1,3 +1,5 @@
+<img src="https://i.imgur.com/DadXYUR.png" width="103"/>
+
 # ZEIT + Manifold
 
 Manifold integration for the ZEIT marketplace.
