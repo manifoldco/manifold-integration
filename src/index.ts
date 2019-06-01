@@ -1,13 +1,27 @@
-const { withUiHook } = require('@zeit/integration-utils');
+import { withUiHook, htm as html } from '@zeit/integration-utils';
 
-let count = 0;
+import { completeOAuth } from './controllers/zeitOAuth';
 
-module.exports = withUiHook(() => {
-  count += 1;
-  return `
+export default withUiHook(async ({ zeitClient, payload }): Promise<string> => {
+  let metadata = await zeitClient.getMetadata();
+  // const { action, projectId } = payload;
+
+  if (!metadata.manifoldToken && payload.query.code) {
+    await completeOAuth(payload, zeitClient, metadata);
+    metadata = await zeitClient.getMetadata();
+  }
+
+  if (metadata.manifoldToken) {
+    return html`
+      <Page>
+          Logged in with oauth on Manifold
+      </Page>
+    `;
+  }
+
+  return html`
     <Page>
-      <P>Counter: ${count}</P>
-      <Button>Count Me</Button>
+      You are not logged in... What?
     </Page>
   `;
 });
