@@ -35,18 +35,10 @@ export default withUiHook(
       try {
         const user = await client.getSelf();
 
-        const err = user as Manifold.Error;
-        if (err.message) {
-          delete metadata.manifoldToken;
-          zeitClient.setMetadata(metadata);
-          return unauthenticatedView(payload);
-        }
-        const casted = user as Manifold.User;
-
         return router({
           'test-provision': () => testProvisionView(),
           'product-([a-z0-9][a-z0-9\\-\\_]{1,128})': (_, params) => productView(_, params),
-        }, authenticatedView(casted), action);
+        }, authenticatedView(user), action);
       } catch (err) {
         return error('500', err);
       }
