@@ -1,4 +1,8 @@
 declare namespace Manifold {
+  interface Error {
+    message: string
+  }
+
   type Tag = string;
 
   interface ValueProp {
@@ -29,5 +33,24 @@ declare namespace Manifold {
     cost: number;
     regions: [string];
     features: [ProductFeatures];
+  }
+
+  interface AuthToken {
+    id: string;
+    body: AuthTokenBody,
+  }
+
+  interface AuthTokenBody {
+    token: string
+  }
+
+  interface User {
+    id: string;
+    body: UserBody,
+  }
+
+  interface UserBody {
+    name: string
+    email: string
   }
 }

@@ -1,7 +1,7 @@
 import { htm } from '@zeit/integration-utils';
 
-export default () => htm`
+export default (user: Manifold.User) => htm`
 <Page>
-  Logged in with oauth on Manifold
+  Welcome ${user.body.email}
 </Page>
 `;
