@@ -8,7 +8,7 @@ import testProvisionView from './views/test-provision';
 import { TEST_PROVISION, PRODUCT_PAGE } from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
-import { router } from './api/router';
+import { Router } from './api/router';
 
 const { MANIFOLD_IDENTITY_URL } = process.env;
 
@@ -36,10 +36,15 @@ export default withUiHook(
       try {
         const user = await client.getSelf();
 
-        return router({
-          [TEST_PROVISION]: testProvisionView,
-          [PRODUCT_PAGE]: productView,
-        }, authenticatedView(user), action);
+        return new Router({
+          routes: {
+            [TEST_PROVISION]: testProvisionView,
+            [PRODUCT_PAGE]: productView,
+          },
+          client,
+          payload,
+          zeitClient,
+        }).route(action, authenticatedView(user));
       } catch (err) {
         delete metadata.manifoldToken;
         await zeitClient.setMetadata(metadata);

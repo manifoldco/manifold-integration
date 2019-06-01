@@ -1,9 +1,7 @@
 import { htm } from '@zeit/integration-utils';
 
-export default () => {
-  return htm`
+export default () => htm`
     <Page>
       Test Provision View
     </Page>
 `;
-};

@@ -1,9 +1,19 @@
 import { htm } from '@zeit/integration-utils';
 
 import products from '../data/products';
+import { RouteParams } from '../api/router';
 
-export default (_: string, params: string[]) => {
-  const product = products.find((prod: Manifold.Product) => prod.label === params[0]);
+export default (attrs: RouteParams) => {
+  if (!attrs.params) {
+    return htm`
+      <Page>
+        <Notice type="error">Product not found</Notice>
+      </Page>
+    `;
+  }
+
+  const productLabel = attrs.params[0];
+  const product = products.find((prod: Manifold.Product) => prod.label === productLabel);
 
   if (!product) {
     return htm`
