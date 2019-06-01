@@ -37,9 +37,9 @@ export default withUiHook(
         const user = await client.getSelf();
 
         return router({
-          [TEST_PROVISION]: testProvisionView,
-          [PRODUCT_PAGE]: productView,
-        }, authenticatedView(user), action);
+          [TEST_PROVISION]: testProvisionView(client, payload),
+          [PRODUCT_PAGE]: productView(client, payload),
+        }, authenticatedView(client, payload, user), action);
       } catch (err) {
         delete metadata.manifoldToken;
         await zeitClient.setMetadata(metadata);
