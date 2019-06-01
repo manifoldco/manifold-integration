@@ -13,8 +13,7 @@ export default (user: Manifold.User) => htm`
       <Box display="flex">
         <Img src="https://cdn.manifold.co/providers/mailgun/logos/q922nwncyuw263chbg86e0rw1m.png" />
         <Box>
-          <H2>Resource name</H2>
-          <H3>Mailgun</H3>
+          <H2>Mailgun</H2>
         </Box>
       </Box>
       </FsContent>
