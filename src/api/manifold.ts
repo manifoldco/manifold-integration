@@ -64,6 +64,6 @@ export class Manifold {
         },
       }
     );
-    return toJSON(response);
+    return toJSON<Manifold.User>(response);
   }
 }
