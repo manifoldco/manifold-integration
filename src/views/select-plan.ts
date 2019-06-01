@@ -1,9 +1,8 @@
-import { htm, UiHookPayload } from '@zeit/integration-utils';
+import { htm } from '@zeit/integration-utils';
 
 import { PROVISION } from '../constants';
-import { Manifold } from '../api/manifold';
 
-export default (_: Manifold, __: UiHookPayload) => () => htm`
+export default () => htm`
 <Page>
   <H2>Select Plan</H2>
   <Select>

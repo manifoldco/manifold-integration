@@ -1,10 +1,19 @@
-import { htm, UiHookPayload } from '@zeit/integration-utils';
+import { htm } from '@zeit/integration-utils';
 
 import products from '../data/products';
-import { Manifold } from '../api/manifold';
+import { RouteParams } from '../api/router';
 
-export default (_: Manifold, __: UiHookPayload) => (___: string, params: string[]) => {
-  const product = products.find((prod: Manifold.Product) => prod.label === params[0]);
+export default (attrs: RouteParams) => {
+  if (!attrs.params) {
+    return htm`
+      <Page>
+        <Notice type="error">Product not found</Notice>
+      </Page>
+    `;
+  }
+
+  const productLabel = attrs.params[0];
+  const product = products.find((prod: Manifold.Product) => prod.label === productLabel);
 
   if (!product) {
     return htm`

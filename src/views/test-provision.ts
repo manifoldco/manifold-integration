@@ -1,8 +1,6 @@
-import { htm, UiHookPayload } from '@zeit/integration-utils';
+import { htm } from '@zeit/integration-utils';
 
-import { Manifold } from '../api/manifold';
-
-export default (_: Manifold, __: UiHookPayload) => () => htm`
+export default () => htm`
     <Page>
       Test Provision View
     </Page>

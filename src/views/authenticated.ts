@@ -1,9 +1,8 @@
-import { htm, UiHookPayload } from '@zeit/integration-utils';
+import { htm } from '@zeit/integration-utils';
 
-import { Manifold } from '../api/manifold';
 import { TEST_PROVISION } from '../constants';
 
-export default (_: Manifold, __: UiHookPayload, user: Manifold.User) => () => htm`
+export default (user: Manifold.User) => () => htm`
 <Page>
   <Container>
     <Box display="flex" justifyContent="space-between">

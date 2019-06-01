@@ -1,16 +1,64 @@
-export type RouteHandler = (action: string, params: string[]) => string;
+import { ZeitClient, UiHookPayload } from '@zeit/integration-utils';
+import { Manifold } from './manifold';
 
-export const router = (routes: {[s: string]: RouteHandler;}, def: RouteHandler, action: string): string => {
-  const route = Object.keys(routes).find((key: string): boolean => new RegExp(key).test(action));
+export interface RouteParams {
+  client: Manifold;
+  zeitClient: ZeitClient;
+  payload: UiHookPayload;
+  action: string;
+  params?: string[];
+}
 
-  if (!route) {
-    return def(action, []);
+export type RouteHandler = (params: RouteParams) => string;
+
+interface Config {
+  client: Manifold;
+  zeitClient: ZeitClient;
+  payload: UiHookPayload;
+  routes: {[s: string]: RouteHandler};
+}
+
+export class Router {
+  manifoldClient: Manifold;
+  zeitClient: ZeitClient;
+  zeitPayload: UiHookPayload;
+  routes: {[s: string]: RouteHandler};
+
+  constructor(config: Config) {
+    this.manifoldClient = config.client;
+    this.zeitClient = config.zeitClient;
+    this.zeitPayload = config.payload;
+    this.routes = config.routes;
   }
 
-  const matches = action.match(new RegExp(route));
-  if (!matches) {
-    return routes[route](action, []);
-  }
+  route(action: string, def: RouteHandler) {
+    const route = Object.keys(this.routes).find((key: string): boolean => new RegExp(key).test(action));
 
-  return routes[route](action, [...matches.splice(1)]);
-};
+    if (!route) {
+      return def({
+        action,
+        client: this.manifoldClient,
+        payload: this.zeitPayload,
+        zeitClient: this.zeitClient,
+      });
+    }
+
+    const matches = action.match(new RegExp(route));
+    if (!matches) {
+      return this.routes[route]({
+        action,
+        client: this.manifoldClient,
+        payload: this.zeitPayload,
+        zeitClient: this.zeitClient,
+      });
+    }
+
+    return this.routes[route]({
+      action,
+      params: [...matches.splice(1)],
+      client: this.manifoldClient,
+      payload: this.zeitPayload,
+      zeitClient: this.zeitClient,
+    });
+  }
+}
