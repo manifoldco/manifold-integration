@@ -64,8 +64,8 @@ export class Manifold {
   manifoldHost: string;
   identityUrl: string;
   marketplaceUrl: string;
-  connectorUrl: string;
   provisioningUrl: string;
+  connectorUrl: string;
   bearerToken: string | undefined;
 
   constructor(config: ManifoldConfig) {

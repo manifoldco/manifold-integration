@@ -8,8 +8,11 @@ import { $ } from '../utils/currency';
 export default async (attrs: RouteParams): Promise<string> => {
   const resources = await attrs.client.getResources();
 
+  const { provisionName } = attrs.payload.clientState;
+
   return htm`
     <Page>
+      ${provisionName && htm`<Notice type="success">Service ${provisionName} provisioned.</Notice>`}
       <Box display="flex" justifyContent="space-between" marginBottom="1rem">
         <H1>Manifold services</H1>
         <Button action="${SELECT_PRODUCT}" small highlight>+ Add a new service</Button>
