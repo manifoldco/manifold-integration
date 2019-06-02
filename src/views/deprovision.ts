@@ -31,7 +31,7 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
     return htm`
       <Page>
         Deprovisioning...
-        <AutoRefresh timeout="3000" action="/home"/>
+        <AutoRefresh timeout="3000" action="discovery"/>
       </Page>
     `;
   } catch (e) {

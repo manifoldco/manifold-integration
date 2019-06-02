@@ -114,45 +114,6 @@ export class Manifold {
   }
 
   async getResources(): Promise<Manifold.Resource[]> {
-    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        authorization: `Bearer ${this.bearerToken}`,
-      },
-    });
-
-    const resPayloads = await toJSON<Manifold.Resource[]>(resRes);
-
-    const resources = resPayloads.map(
-      (resource: Manifold.Resource): Manifold.Resource => {
-        const product = products.find(p => p.id === resource.body.product_id);
-        if (!product) {
-          return {
-            ...resource,
-            state: 'done',
-          };
-        }
-
-        const plan = product.plans.find(p => p.id === resource.body.plan_id);
-        if (!plan) {
-          return {
-            ...resource,
-            state: 'done',
-            product,
-          };
-        }
-
-        return {
-          ...resource,
-          state: 'done',
-          product,
-          plan,
-        };
-      }
-    );
-
     const opRes = await fetch(
       `${this.provisioningUrl}${routes.provisioning.operations}?is_deleted=false`,
       {
@@ -167,107 +128,130 @@ export class Manifold {
 
     const opPayloads = await toJSON<Manifold.Provision[]>(opRes);
 
-    const opResources = opPayloads
-      .filter((operation: Manifold.Provision) => operation.state !== 'done')
-      .map(
-        (operation: Manifold.Provision): Manifold.Resource => {
-          const product = products.find(p => p.id === operation.product_id);
-          if (!product) {
-            return {
-              id: operation.resource_id,
-              state: 'provisioning',
-              body: {
-                ...(operation as Manifold.ResourceBody),
-              },
-            };
-          }
+    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+    });
 
-          const plan = product.plans.find(p => p.id === operation.plan_id);
-          if (!plan) {
-            return {
-              id: operation.resource_id,
-              state: 'provisioning',
-              body: {
-                ...(operation as Manifold.ResourceBody),
-              },
-              product,
-            };
-          }
+    const resPayloads = await toJSON<Manifold.Resource[]>(resRes);
 
-          return {
-            id: operation.resource_id,
-            state: 'provisioning',
-            body: {
-              ...(operation as Manifold.ResourceBody),
-            },
-            product,
-            plan,
-          };
-        }
+    return resPayloads.map((resource: Manifold.Resource): Manifold.Resource => {
+      const operation = opPayloads.filter(
+        (op: Manifold.Provision) => op.state !== 'done' && op.resource_id === resource.id
       );
 
-    resources.push(...opResources);
+      let createdResource: Manifold.Resource;
+      if (operation.length > 0 && operation[0].type === 'provision') {
+        createdResource = {
+          ...resource,
+          state: 'provisioning',
+        };
+      } else if (operation.length > 0 && operation[0].type === 'deprovision') {
+        createdResource = {
+          ...resource,
+          state: 'deprovisioning',
+        };
+      } else {
+        createdResource = {
+          ...resource,
+          state: 'done',
+        };
+      }
 
-    return resources;
+      const product = products.find(p => p.id === resource.body.product_id);
+      if (!product) {
+        return {
+          ...createdResource,
+        };
+      }
+
+      const plan = product.plans.find(p => p.id === resource.body.plan_id);
+      if (!plan) {
+        return {
+          ...createdResource,
+          product,
+        };
+      }
+
+      return {
+        ...createdResource,
+        product,
+        plan,
+      };
+    });
   }
 
   async getResourcesId(resourceId: string): Promise<Manifold.Resource> {
-    let resource: Manifold.Resource;
-    try {
-      const resRes = await fetch(
-        `${this.marketplaceUrl}${routes.marketplace.resources}/${resourceId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            authorization: `Bearer ${this.bearerToken}`,
-          },
-        }
-      );
+    let state = 'done';
 
-      resource = await toJSON<Manifold.Resource>(resRes);
-    } catch (e) {
-      const opRes = await fetch(
-        `${this.provisioningUrl}${
-          routes.provisioning.operations
+    const opRes = await fetch(
+      `${this.provisioningUrl}${
+        routes.provisioning.operations
         }?is_deleted=false&resource_id=${resourceId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            authorization: `Bearer ${this.bearerToken}`,
-          },
-        }
-      );
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          authorization: `Bearer ${this.bearerToken}`,
+        },
+      }
+    );
 
-      const operation = await toJSON<Manifold.Provision>(opRes);
+    const operations = await toJSON<Manifold.Provision[]>(opRes);
+    const operation = operations.filter(op => op.state !== 'done');
 
-      resource = {
-        id: operation.resource_id,
+    if (operation.length > 0 && operation[0].type === 'provision') {
+      return {
+        id: operation[0].resource_id,
         state: 'provisioning',
         body: {
-          ...(operation as Manifold.ResourceBody),
+          ...(operation[0] as Manifold.ResourceBody),
         },
       };
     }
+    if (operation.length > 0 && operation[0].type === 'deprovision') {
+      state = 'deprovision';
+    }
+
+    const resRes = await fetch(
+      `${this.marketplaceUrl}${routes.marketplace.resources}/${resourceId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          authorization: `Bearer ${this.bearerToken}`,
+        },
+      }
+    );
+
+    const resource = await toJSON<Manifold.Resource>(resRes);
 
     const product = products.find(p => p.id === resource.body.product_id);
     if (!product) {
-      return resource;
+      return {
+        ...resource,
+        state,
+      };
     }
 
     const plan = product.plans.find(p => p.id === resource.body.plan_id);
     if (!plan) {
       return {
         ...resource,
+        state,
         product,
       };
     }
 
     return {
       ...resource,
+      state,
       product,
       plan,
     };
@@ -298,29 +282,29 @@ export class Manifold {
     provision: Manifold.Provision,
     userId: string
   ): Promise<Manifold.Provision> {
-    const opID = newID('operation');
-    const resID = newID('resource');
+    const operationId = newID('operation');
+    const resourceId = newID('resource');
     const data = {
       type: 'operation',
       version: 1,
-      id: opID,
+      id: operationId,
       body: {
         user_id: userId,
         features: {},
-        label: `zeit-${resID}`,
+        label: `zeit-${resourceId}`,
         name: provision.name,
         message: '',
         plan_id: provision.plan_id,
         product_id: provision.product_id,
         region_id: provision.region_id,
-        resource_id: resID,
+        resource_id: resourceId,
         source: 'catalog',
         state: 'provision',
         type: 'provision',
       },
     };
 
-    const opRes = await fetch(`${this.provisioningUrl}${routes.provisioning.operations}/${opID}`, {
+    const opRes = await fetch(`${this.provisioningUrl}${routes.provisioning.operations}/${operationId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -330,10 +314,15 @@ export class Manifold {
       body: JSON.stringify(data),
     });
 
-    return toJSON<Manifold.Provision>(opRes);
+    const result = await toJSON<Manifold.Provision>(opRes);
+
+    return {
+      ...result,
+      resource_id: resourceId,
+    };
   }
 
-  async deprovisionResource(resourceId: string, userId: string): Promise<void> {
+  async deprovisionResource(resourceId: string, userId: string): Promise<Manifold.Deprovision> {
     const opID = newID('operation');
     const data = {
       type: 'operation',
@@ -357,7 +346,7 @@ export class Manifold {
       body: JSON.stringify(data),
     });
 
-    await toJSON<any>(opRes);
+    return toJSON<Manifold.Deprovision>(opRes);
   }
 
   async getSso(resourceId: string): Promise<Manifold.AuthorizationCode> {
