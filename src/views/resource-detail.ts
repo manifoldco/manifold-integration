@@ -74,14 +74,12 @@ export default async (attrs: RouteParams): Promise<string> => {
                 <P>${plan.cost} $</P>
                 <Box borderTop="solid 1px gray" marginTop="1rem" marginBottom="1rem"/>
                 <Box display="flex" flexDirection="column">
-                  ${plan.features.map(
-                    feature => htm`
+                  ${plan.features.map(feature => htm`
                     <Box marginTop="1rem" display="flex" justifyContent="space-between">
                       <B>${feature.name}</B>
                       <Box>${feature.valueName}</Box>
                     </Box>
-                  `
-                  )}
+                  `)}
                 </Box>
               </FsContent>
             </Fieldset>
@@ -93,8 +91,7 @@ export default async (attrs: RouteParams): Promise<string> => {
               <Link action="${DASHBOARD}">← Back to my resources</Link>
             </Box>
             <Box marginLeft="1.5rem">
-                <Button action="${'deprovision-' +
-                  resourceId}" warning>Deprovision resource</Button>
+                <Button action="${`deprovision-${resourceId}`}" warning>Deprovision resource</Button>
             </Box>
           </Box>
         </FsFooter>
