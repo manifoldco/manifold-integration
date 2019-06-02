@@ -43,6 +43,7 @@ module.exports = {
     'lines-between-class-members': 'off', // class members don’t need that space!
     'max-len': 'off', // let Prettier decide
     'object-curly-newline': 'off', // let Prettier decide,
+    'space-before-function-paren': 'off', // let Prettier decide,
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
