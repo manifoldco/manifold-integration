@@ -5,13 +5,13 @@ import { Manifold } from '../api/manifold';
 
 const { MANIFOLD_SCHEME, MANIFOLD_HOST } = process.env;
 
-export default async function (req: IncomingMessage, res: ServerResponse): Promise<void> {
+export default async function(req: IncomingMessage, res: ServerResponse): Promise<void> {
   if (!req.url) {
     res.writeHead(500);
     return res.end('No url provided');
   }
 
-  if (!MANIFOLD_SCHEME || !MANIFOLD_HOST ) {
+  if (!MANIFOLD_SCHEME || !MANIFOLD_HOST) {
     res.writeHead(500);
     return res.end('Missing configuration in the integration.');
   }
