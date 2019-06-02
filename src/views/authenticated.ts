@@ -6,7 +6,6 @@ import { $ } from '../utils/currency';
 
 export default async (attrs: RouteParams): Promise<string> => {
   const resources = await attrs.client.getResources();
-  console.log(resources);
 
   const { provisionName } = attrs.payload.clientState;
 
