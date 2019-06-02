@@ -53,4 +53,27 @@ declare namespace Manifold {
     name: string
     email: string
   }
+
+  interface Resource {
+    id: string;
+    body: ResourceBody,
+  }
+
+  interface ResourceBody {
+    name: string;
+    label: string;
+    product_id: string;
+    plan_id: string;
+    region_id: string;
+    annotations: {[s: string]: string[]}
+  }
+
+  interface AuthorizationCode {
+    id: string;
+    body: AuthorizationCodeBody,
+  }
+
+  interface AuthorizationCodeBody {
+    redirect_uri: string;
+  }
 }

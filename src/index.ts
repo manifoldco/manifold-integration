@@ -5,24 +5,27 @@ import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
 import productView from './views/product';
 import testProvisionView from './views/test-provision';
-import { TEST_PROVISION, PRODUCT_PAGE } from './constants';
+import resourceDetailsView from './views/resource-detail';
+import { TEST_PROVISION, PRODUCT_PAGE, RESOURCE_DETAILS } from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
 import { Router } from './api/router';
 
-const { MANIFOLD_IDENTITY_URL } = process.env;
+const { MANIFOLD_IDENTITY_URL, MANIFOLD_MARKETPLACE_URL, MANIFOLD_CONNECTOR_URL } = process.env;
 
 export default withUiHook(
   async ({ zeitClient, payload }): Promise<string> => {
     let metadata = await zeitClient.getMetadata();
     const { action /* , projectId */ } = payload;
 
-    if (!MANIFOLD_IDENTITY_URL) {
+    if (!MANIFOLD_IDENTITY_URL || !MANIFOLD_MARKETPLACE_URL || !MANIFOLD_CONNECTOR_URL) {
       return error('500', 'Missing configuration in the integration.');
     }
 
     const client = new Manifold({
       identityUrl: MANIFOLD_IDENTITY_URL,
+      marketplaceUrl: MANIFOLD_MARKETPLACE_URL,
+      connectorUrl: MANIFOLD_CONNECTOR_URL,
       bearerToken: metadata.manifoldToken,
     });
 
@@ -40,6 +43,7 @@ export default withUiHook(
           routes: {
             [TEST_PROVISION]: testProvisionView,
             [PRODUCT_PAGE]: productView,
+            [RESOURCE_DETAILS]: resourceDetailsView,
           },
           client,
           payload,

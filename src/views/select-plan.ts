@@ -2,7 +2,7 @@ import { htm } from '@zeit/integration-utils';
 
 import { PROVISION } from '../constants';
 
-export default () => htm`
+export default (): Promise<string> => htm`
 <Page>
   <H2>Select Plan</H2>
   <Select>

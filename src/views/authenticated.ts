@@ -2,7 +2,7 @@ import { htm } from '@zeit/integration-utils';
 
 import { TEST_PROVISION } from '../constants';
 
-export default (user: Manifold.User) => () => htm`
+export default (user: Manifold.User) => (): Promise<string> => htm`
 <Page>
   <Container>
     <Box display="flex" justifyContent="space-between">
@@ -38,5 +38,6 @@ export default (user: Manifold.User) => () => htm`
     </FsContent>
   </Fieldset>
   <Link action="product-elegant-cms">Elegant CMS - See More</Link>
+  <Link action="resource-details">View resource</Link>
 </Page>
 `;

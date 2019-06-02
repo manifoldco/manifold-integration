@@ -1,5 +1,52 @@
 export default [
   {
+    id: '234mrgjbfx5ah48ccxx7wr8c2xb8c',
+    label: 'degraffdb-generators-local',
+    name: 'Generators',
+    tagline: 'A very serious matter',
+    logoUrl: 'https://cdn.manifold.co/providers/degraffdb/logos/704028cced331b2d.png',
+    valueProps: [
+      {
+        body:
+          "with our super duper awesome hsms, we can't guarantee you won't be hacked by the nsa, but it'll cost them something",
+        header: 'Great Entropy',
+      },
+      {
+        body: 'it exists on paper, but you know, who cares about that',
+        header: 'An SLA you will love',
+      },
+    ],
+    tags: ['cms'],
+    plans: [
+      {
+        id: '235auzvmuuxhp93ry864bgbpfygxe',
+        label: 'static',
+        name: 'Static',
+        cost: 0,
+        regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
+        features: [
+          { name: 'Entropy', valueName: 'None' },
+          {
+            name: 'Precision',
+            valueName: '100%',
+          },
+          {
+            name: 'SLA',
+            valueName: 'False',
+          },
+          {
+            name: 'HTTP Request Limit',
+            valueName: '100000',
+          },
+          {
+            name: 'HTTP Request Limit',
+            valueName: '100000',
+          },
+        ],
+      },
+    ],
+  },
+  {
     id: '234qqzb2wm6gavkvaqr9e6b54j9dg',
     label: 'elegant-cms',
     name: 'Elegant CMS',

@@ -1,6 +1,6 @@
 import { htm } from '@zeit/integration-utils';
 
-export default () =>
+export default (): Promise<string> =>
   htm`
   <Page>
 
