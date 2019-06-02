@@ -3,9 +3,15 @@ import { TEST_PROVISION, SELECT_PRODUCT } from '../constants';
 import products from '../data/products';
 import { $ } from '../utils/currency';
 
+interface Resource {
+  name: string;
+  plan: Manifold.Plan;
+  product: Manifold.Product;
+}
+
 // TODO: replace with actual services
 // Note: This was just a guess at Manifold.Resource; structure is flexible
-const mockData: Manifold.Resource[] = [
+const mockData: Resource[] = [
   {
     name: 'messaging',
     plan: products[0].plans[0],

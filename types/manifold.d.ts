@@ -35,12 +35,6 @@ declare namespace Manifold {
     features: ProductFeatures[];
   }
 
-  interface Resource {
-    name: string;
-    plan: Plan;
-    product: Product;
-  }
-
   interface AuthToken {
     id: string;
     body: AuthTokenBody;
