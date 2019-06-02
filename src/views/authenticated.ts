@@ -24,7 +24,7 @@ export default async (attrs: RouteParams): Promise<string> => {
       ${!resources.length ? htm`
         <Box marginBottom="1rem">
           <Notice message>
-            You have no resource, yet. Go <Link action="${SELECT_PRODUCT}">provision one!</Link>
+            You have no resource, yet. Click on "Add a new service" to provision one!</Link>
           </Notice>
         </Box>
       ` : resources.map((resource: Manifold.Resource) => {
