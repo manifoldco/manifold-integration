@@ -85,9 +85,16 @@ declare namespace Manifold {
     label: string;
     name: string;
     state: string;
+    type: string;
     product_id: string;
     plan_id: string;
     region_id: string;
     annotations: { [s: string]: string[] };
+  }
+
+  interface Deprovision {
+    resource_id: string;
+    state: string;
+    type: string;
   }
 }
