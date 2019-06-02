@@ -5,9 +5,9 @@ import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
 import productView from './views/product';
 import selectProductView from './views/select-product';
-import testProvisionView from './views/test-provision';
+import provisionView from './views/provision';
 import resourceDetailsView from './views/resource-detail';
-import { TEST_PROVISION, PRODUCT_PAGE, RESOURCE_DETAILS, SELECT_PRODUCT } from './constants';
+import { PROVISION, PRODUCT_PAGE, RESOURCE_DETAILS, SELECT_PRODUCT } from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
 import { Router } from './api/router';
@@ -49,19 +49,17 @@ export default withUiHook(
 
     if (metadata.manifoldToken) {
       try {
-        const user = await client.getSelf();
-
         return new Router({
           routes: {
             [PRODUCT_PAGE]: productView,
             [RESOURCE_DETAILS]: resourceDetailsView,
             [SELECT_PRODUCT]: selectProductView,
-            [TEST_PROVISION]: testProvisionView,
+            [PROVISION]: provisionView,
           },
           client,
           payload,
           zeitClient,
-        }).route(action, authenticatedView(user));
+        }).route(action, authenticatedView);
       } catch (err) {
         console.error('error', err);
         delete metadata.manifoldToken;
