@@ -5,9 +5,10 @@ import authenticatedView from './views/authenticated';
 import unauthenticatedView from './views/unauthenticated';
 import productView from './views/product';
 import selectProductView from './views/select-product';
-import testProvisionView from './views/test-provision';
+import provisionView from './views/provision';
+import operationView from './views/operation';
 import resourceDetailsView from './views/resource-detail';
-import { TEST_PROVISION, PRODUCT_PAGE, RESOURCE_DETAILS, SELECT_PRODUCT } from './constants';
+import { PROVISION, PRODUCT_PAGE, RESOURCE_DETAILS, SELECT_PRODUCT, OPERATION } from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
 import { Router } from './api/router';
@@ -45,7 +46,8 @@ export default withUiHook(
             [PRODUCT_PAGE]: productView,
             [RESOURCE_DETAILS]: resourceDetailsView,
             [SELECT_PRODUCT]: selectProductView,
-            [TEST_PROVISION]: testProvisionView(user),
+            [PROVISION]: provisionView(user),
+            [OPERATION]: operationView,
           },
           client,
           payload,

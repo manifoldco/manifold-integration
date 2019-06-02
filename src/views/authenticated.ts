@@ -1,7 +1,7 @@
 import { htm } from '@zeit/integration-utils';
 
 import { RouteParams } from '../api/router';
-import { TEST_PROVISION, SELECT_PRODUCT } from '../constants';
+import { SELECT_PRODUCT } from '../constants';
 import products from '../data/products';
 import { $ } from '../utils/currency';
 
@@ -54,14 +54,6 @@ export default async (attrs: RouteParams): Promise<string> => {
           </Box>
         `;
       })}
-      <Fieldset>
-        <FsContent>
-          <H1>Provisioning test</H1>
-        </FsContent>
-        <FsContent>
-          <Button action="${TEST_PROVISION}">Provision Now</Button>
-        </FsContent>
-      </Fieldset>
     </Page>
   `;
 };

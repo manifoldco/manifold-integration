@@ -262,7 +262,7 @@ export class Manifold {
     };
   }
 
-  async provisionProduct(provision: Manifold.Provision, userId: string): Promise<void> {
+  async provisionProduct(provision: Manifold.Provision, userId: string): Promise<Manifold.Provision> {
     const opID = newID('operation');
     const resID = newID('resource');
     const data = {
@@ -295,7 +295,7 @@ export class Manifold {
       body: JSON.stringify(data),
     });
 
-    await toJSON<Manifold.Provision>(opRes);
+    return toJSON<Manifold.Provision>(opRes);
   }
 
   async getSso(resourceId: string): Promise<Manifold.AuthorizationCode> {
