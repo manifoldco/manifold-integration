@@ -14,9 +14,11 @@ export default async (attrs: RouteParams): Promise<string> => {
         <H1>Manifold services</H1>
         <Button action="${SELECT_PRODUCT}" small highlight>+ Add a new service</Button>
       </Box>
-      ${resources.length ? htm`
+      ${!resources.length ? htm`
         <Box marginBottom="1rem">
-            <Link>You have no resource, yet. Go <Link action="${SELECT_PRODUCT}">provision one!</Link></Notice>
+          <Notice message>
+            You have no resource, yet. Go <Link action="${SELECT_PRODUCT}">provision one!</Link>
+          </Notice>
         </Box>
       ` : resources.map((resource: Manifold.Resource) => {
         const product = products.find((prod: Manifold.Product): boolean => prod.id === resource.body.product_id);
