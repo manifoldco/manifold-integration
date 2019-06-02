@@ -2,7 +2,7 @@ import { htm } from '@zeit/integration-utils';
 import products from '../data/products';
 import { DASHBOARD } from '../constants';
 
-export default () => htm`
+export default (): Promise<string> => htm`
   <Page>
     <Container>
       <Box display="flex" justifyContent="space-between">

@@ -3,9 +3,15 @@ import { TEST_PROVISION, SELECT_PRODUCT } from '../constants';
 import products from '../data/products';
 import { $ } from '../utils/currency';
 
+interface Resource {
+  name: string;
+  plan: Manifold.Plan;
+  product: Manifold.Product;
+}
+
 // TODO: replace with actual services
 // Note: This was just a guess at Manifold.Resource; structure is flexible
-const mockData: Manifold.Resource[] = [
+const mockData: Resource[] = [
   {
     name: 'messaging',
     plan: products[0].plans[0],
@@ -23,7 +29,8 @@ const mockData: Manifold.Resource[] = [
   },
 ];
 
-export default (user: Manifold.User) => () => {
+
+export default (user: Manifold.User) => (): Promise<string> => {
   console.log(user);
 
   return htm`
@@ -53,7 +60,6 @@ export default (user: Manifold.User) => () => {
         </Box>
       `
       )}
-
       <Fieldset>
         <FsContent>
           <H1>Provisioning test</H1>
@@ -69,6 +75,7 @@ export default (user: Manifold.User) => () => {
           <Button action="${TEST_PROVISION}">Provision Now</Button>
         </FsContent>
       </Fieldset>
+      <Link action="resource-details">View resource</Link>
     </Page>
   `;
 };

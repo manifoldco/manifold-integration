@@ -3,12 +3,12 @@
   "alias": "manifold-integration.zeit.sh",
   "version": 2,
   "builds": [
-    { "src": "src/index.ts", "use": "@now/node" },
-    { "src": "src/oauth.ts", "use": "@now/node" }
+    { "src": "src", "use": "@now/node" }
   ],
   "routes": [
     { "src": "/", "dest": "src/index.ts" },
-    { "src": "/login/oauth", "dest": "src/oauth.ts" }
+    { "src": "/login/oauth", "dest": "src/endpoints/oauth.ts" },
+    { "src": "/sso/(?<id>[^/]+)", "dest": "src/endpoints/sso.ts?resource_id=$id" }
   ],
   "env": {
     "NODE_ENV": "development"

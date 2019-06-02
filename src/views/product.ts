@@ -5,7 +5,7 @@ import { RouteParams } from '../api/router';
 import { $ } from '../utils/currency';
 import { SELECT_PRODUCT } from '../constants';
 
-export default (attrs: RouteParams) => {
+export default (attrs: RouteParams): Promise<string> => {
   if (!attrs.params) {
     return htm`
       <Page>
@@ -15,7 +15,7 @@ export default (attrs: RouteParams) => {
   }
 
   const productLabel = attrs.params[0];
-  const product = products.find((prod: Manifold.Product) => prod.label === productLabel);
+  const product = products.find((prod: Manifold.Product): boolean => prod.label === productLabel);
 
   if (!product) {
     return htm`

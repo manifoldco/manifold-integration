@@ -9,7 +9,7 @@ export interface RouteParams {
   params?: string[];
 }
 
-export type RouteHandler = (params: RouteParams) => string;
+export type RouteHandler = (params: RouteParams) => Promise<string>;
 
 interface Config {
   client: Manifold;
