@@ -14,7 +14,7 @@ export const exportCredentials = async (
     const credentials = await manifoldClient.getCredentials(resourceIds);
 
     // Currently, all credentials will have their values merged if they have the same key, how do we want to handle that?
-    let credentialsValuePair: {[s: string]: string} = {};
+    let credentialsValuePair: { [s: string]: string } = {};
     credentials.forEach(cred => {
       credentialsValuePair = {
         ...credentialsValuePair,
@@ -41,7 +41,7 @@ export const unexportCredentials = async (
   if (projectId) {
     const credentials = await manifoldClient.getCredentials(resourceIds);
 
-    let credentialsValuePair: {[s: string]: string} = {};
+    let credentialsValuePair: { [s: string]: string } = {};
     credentials.forEach(cred => {
       credentialsValuePair = {
         ...credentialsValuePair,

@@ -1,6 +1,6 @@
 import { ZeitClient, UiHookPayload } from '@zeit/integration-utils';
 
-import { Metadata } from '../types';
+import { Metadata } from '../../types/Metadata';
 import { Manifold } from '../api/manifold';
 
 export const completeOAuth = async (

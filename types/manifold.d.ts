@@ -78,7 +78,7 @@ declare namespace Manifold {
 
   interface CredentialBody {
     resource_id: string;
-    values: {[s: string]: string}
+    values: { [s: string]: string };
   }
 
   interface AuthorizationCode {

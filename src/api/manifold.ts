@@ -139,50 +139,52 @@ export class Manifold {
 
     const resPayloads = await toJSON<Manifold.Resource[]>(resRes);
 
-    return resPayloads.map((resource: Manifold.Resource): Manifold.Resource => {
-      const operation = opPayloads.filter(
-        (op: Manifold.Provision) => op.state !== 'done' && op.resource_id === resource.id
-      );
+    return resPayloads.map(
+      (resource: Manifold.Resource): Manifold.Resource => {
+        const operation = opPayloads.filter(
+          (op: Manifold.Provision) => op.state !== 'done' && op.resource_id === resource.id
+        );
 
-      let createdResource: Manifold.Resource;
-      if (operation.length > 0 && operation[0].type === 'provision') {
-        createdResource = {
-          ...resource,
-          state: 'provisioning',
-        };
-      } else if (operation.length > 0 && operation[0].type === 'deprovision') {
-        createdResource = {
-          ...resource,
-          state: 'deprovisioning',
-        };
-      } else {
-        createdResource = {
-          ...resource,
-          state: 'done',
-        };
-      }
+        let createdResource: Manifold.Resource;
+        if (operation.length > 0 && operation[0].type === 'provision') {
+          createdResource = {
+            ...resource,
+            state: 'provisioning',
+          };
+        } else if (operation.length > 0 && operation[0].type === 'deprovision') {
+          createdResource = {
+            ...resource,
+            state: 'deprovisioning',
+          };
+        } else {
+          createdResource = {
+            ...resource,
+            state: 'done',
+          };
+        }
 
-      const product = products.find(p => p.id === resource.body.product_id);
-      if (!product) {
-        return {
-          ...createdResource,
-        };
-      }
+        const product = products.find(p => p.id === resource.body.product_id);
+        if (!product) {
+          return {
+            ...createdResource,
+          };
+        }
 
-      const plan = product.plans.find(p => p.id === resource.body.plan_id);
-      if (!plan) {
+        const plan = product.plans.find(p => p.id === resource.body.plan_id);
+        if (!plan) {
+          return {
+            ...createdResource,
+            product,
+          };
+        }
+
         return {
           ...createdResource,
           product,
+          plan,
         };
       }
-
-      return {
-        ...createdResource,
-        product,
-        plan,
-      };
-    });
+    );
   }
 
   async getResourcesId(resourceId: string): Promise<Manifold.Resource> {
@@ -191,7 +193,7 @@ export class Manifold {
     const opRes = await fetch(
       `${this.provisioningUrl}${
         routes.provisioning.operations
-        }?is_deleted=false&resource_id=${resourceId}`,
+      }?is_deleted=false&resource_id=${resourceId}`,
       {
         method: 'GET',
         headers: {
@@ -260,7 +262,10 @@ export class Manifold {
   async getCredentials(resourceIds?: string[]): Promise<Manifold.Credential[]> {
     let queryParams = '';
     if (resourceIds && resourceIds.length) {
-      queryParams = resourceIds.reduce((value, resourceId) => `${value}&resource_id=${resourceId}`, '?');
+      queryParams = resourceIds.reduce(
+        (value, resourceId) => `${value}&resource_id=${resourceId}`,
+        '?'
+      );
     }
 
     const resRes = await fetch(
@@ -304,15 +309,18 @@ export class Manifold {
       },
     };
 
-    const opRes = await fetch(`${this.provisioningUrl}${routes.provisioning.operations}/${operationId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        authorization: `Bearer ${this.bearerToken}`,
-      },
-      body: JSON.stringify(data),
-    });
+    const opRes = await fetch(
+      `${this.provisioningUrl}${routes.provisioning.operations}/${operationId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          authorization: `Bearer ${this.bearerToken}`,
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
     const result = await toJSON<Manifold.Provision>(opRes);
 

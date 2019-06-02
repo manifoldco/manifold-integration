@@ -1,3 +1,3 @@
 export interface Metadata {
-    manifoldToken: string
+  manifoldToken: string;
 }
