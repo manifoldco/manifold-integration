@@ -59,13 +59,6 @@ export default async (attrs: RouteParams): Promise<string> => {
           <H1>Provisioning test</H1>
         </FsContent>
         <FsContent>
-          <FsTitle>Product</FsTitle>
-            <FsSubtitle>Product you want to provision</FsSubtitle>
-            <Select name="label" value="degraffdb-eight-ball-local">
-              <Option value="degraffdb-eight-ball-local" caption="Degraffdb Eight balls" />
-            </Select>
-        </FsContent>
-        <FsContent>
           <Button action="${TEST_PROVISION}">Provision Now</Button>
         </FsContent>
       </Fieldset>

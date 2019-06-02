@@ -53,6 +53,7 @@ export default withUiHook(
           zeitClient,
         }).route(action, authenticatedView);
       } catch (err) {
+        console.error('error', err);
         delete metadata.manifoldToken;
         await zeitClient.setMetadata(metadata);
         return unauthenticatedView(payload);
