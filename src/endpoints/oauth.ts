@@ -5,6 +5,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 const { ZEIT_CLIENT_ID } = process.env;
 
 export default function (req: IncomingMessage, res: ServerResponse): void {
+  console.log('Oauth endpoint');
   if (!req.url) {
     res.writeHead(500);
     return res.end('No url provided');

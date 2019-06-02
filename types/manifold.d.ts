@@ -71,6 +71,16 @@ declare namespace Manifold {
     annotations: { [s: string]: string[] };
   }
 
+  interface Credential {
+    id: string;
+    body: CredentialBody;
+  }
+
+  interface CredentialBody {
+    resource_id: string;
+    values: {[s: string]: string}
+  }
+
   interface AuthorizationCode {
     id: string;
     body: AuthorizationCodeBody;
