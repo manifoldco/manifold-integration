@@ -99,7 +99,15 @@ export default (attrs: RouteParams): Promise<string> => {
             <Box fontSize="14px" paddingLeft="0.5rem">
               <Link action="${SELECT_PRODUCT}">← Back to all services</Link>
             </Box>
-            <Button highlight action="${`provision-${product.label}`}">+ Create Resource</Button>
+            <Box display="flex">
+              <Box marginRight="2rem" display="flex" fontSize="14px" alignItems="center">
+                <Box marginRight="1.3rem">
+                  <B>Resource's name:</B>
+                </Box>
+                <Input name="resourceName" />
+              </Box>
+              <Button highlight action="${`provision-${product.label}`}">+ Create Resource</Button>
+            </Box>
           </Box>
         </FsFooter>
       </Fieldset>

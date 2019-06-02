@@ -1,5 +1,6 @@
 import { htm } from '@zeit/integration-utils';
 
+import { dashify } from '../utils/dashify';
 import { RouteParams } from '../api/router';
 import { DASHBOARD } from '../constants';
 import products from '../data/products';
@@ -34,12 +35,19 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
     `;
   }
 
+  const { resourceName } = payload.clientState;
+
   try {
     const operation = {
       product_id: product.id,
       region_id: product.plans[0].regions[0],
       plan_id: product.plans[0].id,
     } as Manifold.Provision;
+
+    if (resourceName) {
+      operation.name = resourceName;
+      operation.label = dashify(resourceName);
+    }
 
     const provisionResult = await client.provisionProduct(
       operation,
