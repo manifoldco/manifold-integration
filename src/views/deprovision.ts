@@ -1,9 +1,10 @@
 import { htm } from '@zeit/integration-utils';
 
+import { unexportCredentials } from '../controllers/credentials';
 import { RouteParams } from '../api/router';
 
 export default (user: Manifold.User) => async (attrs: RouteParams): Promise<string> => {
-  const { client, params } = attrs;
+  const { client, params, payload, zeitClient } = attrs;
 
   if (!params) {
     return htm`
@@ -25,6 +26,7 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
 
   try {
     await client.deprovisionResource(resourceId, user.id);
+    await unexportCredentials(payload, zeitClient, client, [resourceId]);
 
     return htm`
       <Page>

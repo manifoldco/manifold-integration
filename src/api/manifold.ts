@@ -18,6 +18,7 @@ const routes = {
   },
   marketplace: {
     resources: '/v1/resources',
+    credentials: '/v1/credentials',
   },
   connector: {
     sso: '/v1/sso',
@@ -254,6 +255,27 @@ export class Manifold {
       product,
       plan,
     };
+  }
+
+  async getCredentials(resourceIds?: string[]): Promise<Manifold.Credential[]> {
+    let queryParams = '';
+    if (resourceIds && resourceIds.length) {
+      queryParams = resourceIds.reduce((value, resourceId) => `${value}&resource_id=${resourceId}`, '?');
+    }
+
+    const resRes = await fetch(
+      `${this.marketplaceUrl}${routes.marketplace.credentials}?${queryParams}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          authorization: `Bearer ${this.bearerToken}`,
+        },
+      }
+    );
+
+    return toJSON<Manifold.Credential[]>(resRes);
   }
 
   async provisionProduct(

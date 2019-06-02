@@ -26,7 +26,7 @@ const { MANIFOLD_SCHEME, MANIFOLD_HOST } = process.env;
 export default withUiHook(
   async ({ zeitClient, payload }): Promise<string> => {
     let metadata = await zeitClient.getMetadata();
-    const { action /* , projectId */ } = payload;
+    const { action } = payload;
 
     if (!MANIFOLD_SCHEME || !MANIFOLD_HOST) {
       return error('500', 'Missing configuration in the integration.');
