@@ -333,7 +333,7 @@ export class Manifold {
       body: {
         user_id: userId,
         features: {},
-        label: `zeit-${resourceId}`,
+        label: provision.label,
         name: provision.name,
         message: '',
         plan_id: provision.plan_id,

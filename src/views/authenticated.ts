@@ -8,13 +8,6 @@ export default async (attrs: RouteParams): Promise<string> => {
   const { payload, client } = attrs;
   const resources = payload.projectId ? await client.getResources(payload.configurationId, payload.projectId) : [];
 
-  const { provisionName } = payload.clientState;
-
-  let notice = '';
-  if (provisionName) {
-    notice = htm`<Notice type="success">Service ${provisionName} provisioned.</Notice>`;
-  }
-
   const resourcesDisplay = !resources.length
     ? htm`
         <Box marginBottom="1rem">
@@ -64,7 +57,6 @@ export default async (attrs: RouteParams): Promise<string> => {
 
   return htm`
     <Page>
-      ${notice}
       <Box display="flex" justifyContent="space-between" marginBottom="1rem">
         <H1>Manifold services</H1>
         <ProjectSwitcher />
