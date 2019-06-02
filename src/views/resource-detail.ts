@@ -5,7 +5,26 @@ import { RouteParams } from '../api/router';
 import { $ } from '../utils/currency';
 import products from '../data/products';
 
-const { ROOT_URL } = process.env;
+// const { ROOT_URL } = process.env;
+
+const mockData = [
+  {
+    body: {
+      values: {
+        SECRET_1: 'AHTNOUCRC<USHURCORUSHOETUWOHKRCH<URCH',
+        SECRET_2: 'AHTNOUCRC<USHURCORUSHOETUWOHKRCH<URCH',
+      },
+    },
+  },
+  {
+    body: {
+      values: {
+        SECRET_3: 'AHTNOUCRC<USHURCORUSHOETUWOHKRCH<URCH',
+        SECRET_4: 'AHTNOUCRC<USHURCORUSHOETUWOHKRCH<URCH',
+      },
+    },
+  },
+];
 
 export default async (attrs: RouteParams): Promise<string> => {
   if (!attrs.params) {
@@ -44,7 +63,17 @@ export default async (attrs: RouteParams): Promise<string> => {
     `;
   }
 
+  /*
   const ssoUrl = `${ROOT_URL}/sso/${resource.id}?authorization=${attrs.client.bearerToken}`;
+  const SSOButton = htm`
+<Link href="${ssoUrl}" target="_blank">
+  <Button small>
+    Open Dashboard︎
+    <Box alignItems="center" display="inline-flex" fontSize="0.875em" height="1.375em" lineHeight="1" marginLeft="0.1em" justifyContent="center" width="1.375em">↗︎</Box>︎
+  </Button>
+</Link>
+`;
+  */
 
   return htm`
     <Page>
@@ -56,12 +85,6 @@ export default async (attrs: RouteParams): Promise<string> => {
                 <Img src="${product.logoUrl}" height="auto" width="100%"/>
               </Box>
               <P>${product.name}</P>
-              <Link href="${ssoUrl}" target="_blank">
-                <Button small>
-                  Open Dashboard︎
-                  <Box alignItems="center" display="inline-flex" fontSize="0.875em" height="1.375em" lineHeight="1" marginLeft="0.1em" justifyContent="center" width="1.375em">↗︎</Box>︎
-                </Button>
-              </Link>
             </Box>
             <Box>
               <H1>${resource.body.name}</H1>
@@ -89,6 +112,20 @@ export default async (attrs: RouteParams): Promise<string> => {
                     )}
                 </FsContent>
               </Fieldset>
+              <H2>Credentials</H2>
+              <Box backgroundColor="#331936" backgroundImage="linearGradient(to bottom right, #192348, #4b1125)" color="#fff" borderRadius="0.25rem" fontFamily="Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace" fontSize="14px" padding="1rem">
+                # ${resource.body.name}
+                <BR />
+                ${mockData.map(
+                  ({ body }) => htm`
+                    ${Object.entries(body.values).map(
+                      ([key, value]) => htm`
+                      <BR />${key}=${value}
+                    `
+                    )}
+                `
+                )}
+              </Box>
             </Box>
           </Box>
         </FsContent>
