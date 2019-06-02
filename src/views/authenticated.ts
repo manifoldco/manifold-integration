@@ -10,26 +10,78 @@ export default async (attrs: RouteParams): Promise<string> => {
   const { payload, client } = attrs;
   const resources = payload.projectId ? await client.getResources(payload.configurationId, payload.projectId) : [];
 
-  const resourcesDisplay = !resources.length
-    ? htm`
-      <Box marginBottom="1rem" backgroundColor="#fff" border="solid rgb(234, 234, 234) 1px" borderRadius="0.4rem" padding="0.5rem 1rem">
-        You have no resources yet. <Link action="${SELECT_PRODUCT}">Add a new service</Link> to get started.
+  // View: select a project
+  if (!payload.projectId) {
+    return htm`
+      <Page>
+        <Box display="flex" justifyContent="space-between" marginBottom="1rem" borderBottom="1px solid #eaeaea" marginBottom="1rem" paddingBottom="1rem">
+          <Box display="flex" justifyContent="space-between">
+            <H1>Manifold services</H1>
+            <Box marginLeft="1rem">
+              <ProjectSwitcher />
+            </Box>
+          </Box>
+          <Button small disabled>+ Add a new service</Button>
+        </Box>
+        <Box textAlign="center" marginTop="2rem">
+          <P>Which project do you want to add a service to?</P>
+          <Box marginTop="1rem">
+            <ProjectSwitcher />
+          </Box>
+        </Box>
+      </Page>`;
+  }
+
+  // View: no resources for project
+  if (!resources.length) {
+    return htm`
+      <Page>
+        <Box display="flex" justifyContent="space-between" marginBottom="1rem" borderBottom="1px solid #eaeaea" marginBottom="1rem" paddingBottom="1rem">
+          <Box display="flex" justifyContent="space-between">
+            <H1>Manifold services</H1>
+            <Box marginLeft="1rem">
+              <ProjectSwitcher />
+            </Box>
+          </Box>
+          <Button action="${SELECT_PRODUCT}" small highlight>+ Add a new service</Button>
+        </Box>
+        <Box marginTop="2rem" textAlign="center">
+          <P>
+            No resources found for ${
+              payload.project ? htm`<B>${payload.project.name}</B>` : 'this project'
+            }. <Link action="${SELECT_PRODUCT}">Add a new service</Link> to get started.
+          </P>
+        </Box>
+      </Page>
+    `;
+  }
+
+  // View: default view with resources
+  return htm`
+    <Page>
+      <Box display="flex" justifyContent="space-between" marginBottom="1rem" borderBottom="1px solid #eaeaea" marginBottom="1rem" paddingBottom="1rem">
+        <Box display="flex" justifyContent="space-between">
+          <H1>Manifold services</H1>
+          <Box marginLeft="1rem">
+            <ProjectSwitcher />
+          </Box>
+        </Box>
+        <Button action="${SELECT_PRODUCT}" small highlight>+ Add a new service</Button>
       </Box>
-      `
-    : resources.map(
-        (resource: Manifold.Resource): string => {
-          let name = htm`<Link action="${`resource-details-${resource.id}`}">${resource.body.name}</Link>`;
-          let button = htm`<Button small action="${`resource-details-${resource.id}`}">View resource</Button>`;
 
-          if (resource.state === 'provisioning') {
-            name = resource.body.name;
-            button = htm`<Button small disabled>Preparing…</Button>`;
-          } else if (resource.state === 'deprovisioning') {
-            name = resource.body.name;
-            button = htm`<Button small disabled>Deprovisioning…</Button>`;
-          }
+      ${resources.map((resource: Manifold.Resource) => {
+        let name = htm`<Link action="${`resource-details-${resource.id}`}">${resource.body.name}</Link>`;
+        let button = htm`<Button small action="${`resource-details-${resource.id}`}">View resource</Button>`;
 
-          return htm`
+        if (resource.state === 'provisioning') {
+          name = resource.body.name;
+          button = htm`<Button small disabled>Preparing…</Button>`;
+        } else if (resource.state === 'deprovisioning') {
+          name = resource.body.name;
+          button = htm`<Button small disabled>Deprovisioning…</Button>`;
+        }
+
+        return htm`
           <Box marginBottom="1rem">
             <Fieldset>
               <FsContent>
@@ -44,10 +96,10 @@ export default async (attrs: RouteParams): Promise<string> => {
                     <Img src="${resource.product.logoUrl}" width="100%" height="auto"/>
                   </Box>
                   <Box marginRight="0.5rem">${resource.product.name}</Box>
-                  <Box color="#737373">${resource.plan.name} ${$(
-                        resource.plan.cost
-                      )}<Box display="inline" marginLeft="-0.25em">/mo</Box></Box>
-                </Box>`
+                  <Box color="#737373">
+                    ${resource.plan.name} ${$(resource.plan.cost)}
+                    <Box display="inline" marginLeft="-0.25em">/mo</Box></Box>
+                  </Box>`
                     : ''
                 }
               </FsContent>
@@ -57,29 +109,7 @@ export default async (attrs: RouteParams): Promise<string> => {
             </Fieldset>
           </Box>
         `;
-        }
-      );
-
-  return htm`
-    <Page>
-      <Box display="flex" justifyContent="space-between" marginBottom="1rem">
-        <H1>Manifold services</H1>
-        <ProjectSwitcher />
-        <Button action="${SELECT_PRODUCT}" small highlight disabled="${
-    payload.projectId ? 'false' : 'true'
-  }">+ Add a new service</Button>
-      </Box>
-      ${
-        payload.projectId
-          ? resourcesDisplay
-          : htm`
-        <Box marginBottom="1rem">
-          <Notice type="message">
-            Please select a project to get started with Manifold.
-          </Notice>
-        </Box>
-      `
-      }
+      })}
     </Page>
   `;
 };

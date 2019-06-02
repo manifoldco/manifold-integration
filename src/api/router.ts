@@ -1,10 +1,11 @@
 import { ZeitClient, UiHookPayload } from '@zeit/integration-utils';
 import { Manifold } from './manifold';
+import { ZEIT } from '../../types/zeit';
 
 export interface RouteParams {
   client: Manifold;
   zeitClient: ZeitClient;
-  payload: UiHookPayload;
+  payload: ZEIT.UiHookPayload;
   action: string;
   params?: string[];
 }
