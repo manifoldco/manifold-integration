@@ -72,7 +72,7 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
       return htm`
         <Page>
           <Notice type="error">
-            Resource name must only use lowercase letters, numbers, hyphens, and underscores. Must also start with a letter (ex:
+            Resource name must start with a letter and contain no spaces. Hyphens and underscores allowed (ex:
             <Box display="inline-block" fontFamily="Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace" fontWeight="700">my-resource</Box>
             or
             <Box display="inline-block" fontFamily="Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace" fontWeight="700">my_resource</Box>).
