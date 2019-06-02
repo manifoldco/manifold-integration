@@ -114,17 +114,14 @@ export class Manifold {
   }
 
   async getResources(): Promise<Manifold.Resource[]> {
-    const opRes = await fetch(
-      `${this.provisioningUrl}${routes.provisioning.operations}?is_deleted=false`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          authorization: `Bearer ${this.bearerToken}`,
-        },
-      }
-    );
+    const opRes = await fetch(`${this.provisioningUrl}${routes.provisioning.operations}?is_deleted=false`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+    });
 
     const opPayloads = await toJSON<Manifold.Provision[]>(opRes);
 
@@ -191,9 +188,7 @@ export class Manifold {
     let state = 'done';
 
     const opRes = await fetch(
-      `${this.provisioningUrl}${
-        routes.provisioning.operations
-      }?is_deleted=false&resource_id=${resourceId}`,
+      `${this.provisioningUrl}${routes.provisioning.operations}?is_deleted=false&resource_id=${resourceId}`,
       {
         method: 'GET',
         headers: {
@@ -220,17 +215,14 @@ export class Manifold {
       state = 'deprovision';
     }
 
-    const resRes = await fetch(
-      `${this.marketplaceUrl}${routes.marketplace.resources}/${resourceId}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          authorization: `Bearer ${this.bearerToken}`,
-        },
-      }
-    );
+    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}/${resourceId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+    });
 
     const resource = await toJSON<Manifold.Resource>(resRes);
 
@@ -262,31 +254,22 @@ export class Manifold {
   async getCredentials(resourceIds?: string[]): Promise<Manifold.Credential[]> {
     let queryParams = '';
     if (resourceIds && resourceIds.length) {
-      queryParams = resourceIds.reduce(
-        (value, resourceId) => `${value}&resource_id=${resourceId}`,
-        '?'
-      );
+      queryParams = resourceIds.reduce((value, resourceId) => `${value}&resource_id=${resourceId}`, '?');
     }
 
-    const resRes = await fetch(
-      `${this.marketplaceUrl}${routes.marketplace.credentials}?${queryParams}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          authorization: `Bearer ${this.bearerToken}`,
-        },
-      }
-    );
+    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.credentials}?${queryParams}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+    });
 
     return toJSON<Manifold.Credential[]>(resRes);
   }
 
-  async provisionProduct(
-    provision: Manifold.Provision,
-    userId: string
-  ): Promise<Manifold.Provision> {
+  async provisionProduct(provision: Manifold.Provision, userId: string): Promise<Manifold.Provision> {
     const operationId = newID('operation');
     const resourceId = newID('resource');
     const data = {
@@ -309,18 +292,15 @@ export class Manifold {
       },
     };
 
-    const opRes = await fetch(
-      `${this.provisioningUrl}${routes.provisioning.operations}/${operationId}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          authorization: `Bearer ${this.bearerToken}`,
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const opRes = await fetch(`${this.provisioningUrl}${routes.provisioning.operations}/${operationId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+      body: JSON.stringify(data),
+    });
 
     const result = await toJSON<Manifold.Provision>(opRes);
 

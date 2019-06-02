@@ -32,9 +32,7 @@ export class Router {
   }
 
   route(action: string, def: RouteHandler) {
-    const route = Object.keys(this.routes).find(
-      (key: string): boolean => new RegExp(key).test(action)
-    );
+    const route = Object.keys(this.routes).find((key: string): boolean => new RegExp(key).test(action));
 
     if (!route) {
       return def({

@@ -25,9 +25,7 @@ export default async (attrs: RouteParams): Promise<string> => {
     `;
   }
 
-  const product = products.find(
-    (prod: Manifold.Product): boolean => prod.id === resource.body.product_id
-  );
+  const product = products.find((prod: Manifold.Product): boolean => prod.id === resource.body.product_id);
   if (!product) {
     return htm`
       <Page>

@@ -10,10 +10,7 @@ export const completeOAuth = async (
   metadata: Metadata
 ): Promise<void> => {
   try {
-    const tokenInfo = await manifoldClient.getTokensOAuth(
-      payload.query.code as string,
-      payload.query.state as string
-    );
+    const tokenInfo = await manifoldClient.getTokensOAuth(payload.query.code as string, payload.query.state as string);
 
     await zeitClient.setMetadata({
       ...metadata,

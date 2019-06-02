@@ -33,9 +33,7 @@ export default async (attrs: RouteParams): Promise<string> => {
       `
           : resources.map(
               (resource: Manifold.Resource): string => {
-                let button = htm`<Button small action="${`resource-details-${
-                  resource.id
-                }`}">View resource</Button>`;
+                let button = htm`<Button small action="${`resource-details-${resource.id}`}">View resource</Button>`;
 
                 if (resource.state === 'provisioning') {
                   button = htm`<Button small disabled>Preparing...</Button>`;

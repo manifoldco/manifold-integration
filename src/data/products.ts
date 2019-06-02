@@ -243,11 +243,7 @@ const products = [
         label: 'little-lemur',
         name: 'Little Lemur',
         cost: 0,
-        regions: [
-          '235mhkk15ky7ha9qpu4gazrqjt2gr',
-          '235m2c51y0625vvtk6ptf55bhpkty',
-          '235nu2c0z73hq1f9qby444nnnq1fu',
-        ],
+        regions: ['235mhkk15ky7ha9qpu4gazrqjt2gr', '235m2c51y0625vvtk6ptf55bhpkty', '235nu2c0z73hq1f9qby444nnnq1fu'],
         features: [
           {
             name: 'Connections',
@@ -286,8 +282,7 @@ const products = [
     label: 'cloudcube',
     name: 'Cloudcube',
     tagline: 'Flexible AWS S3 file storage without the hassle.',
-    logoUrl:
-      'https://cdn.manifold.co/providers/cloudforged/logos/b2d4d01c-dee4-4a87-95da-45f72fdc3202.png',
+    logoUrl: 'https://cdn.manifold.co/providers/cloudforged/logos/b2d4d01c-dee4-4a87-95da-45f72fdc3202.png',
     valueProps: [
       {
         body:
@@ -295,8 +290,7 @@ const products = [
         header: 'Private and Public Storage',
       },
       {
-        body:
-          'Upload, Rename, Move, and Delete your files from the Dashboard’s intuitive graphical interface.',
+        body: 'Upload, Rename, Move, and Delete your files from the Dashboard’s intuitive graphical interface.',
         header: 'GUI Interface',
       },
       {
@@ -419,8 +413,7 @@ const products = [
     label: 'hypdf',
     name: 'HyPDF',
     tagline: 'Your Swiss Army knife for working with PDF',
-    logoUrl:
-      'https://cdn.manifold.co/providers/hypdf/logos/15cbd713-15e1-41fc-9894-b73049dce40d.png',
+    logoUrl: 'https://cdn.manifold.co/providers/hypdf/logos/15cbd713-15e1-41fc-9894-b73049dce40d.png',
     valueProps: [
       {
         body: 'Create beautiful and complex PDF documents using familiar HTML, CSS and JavaScript.',
@@ -490,8 +483,7 @@ const products = [
         header: 'Powerful Search & Alerts',
       },
       {
-        body:
-          'Get up and running in mere minutes! Spend that saved time building your awesome product instead.',
+        body: 'Get up and running in mere minutes! Spend that saved time building your awesome product instead.',
         header: 'Easy Setup',
       },
       {
@@ -540,8 +532,7 @@ const products = [
     label: 'pdfshift',
     name: 'PDFShift',
     tagline: 'Convert HTML documents to PDF in one simple POST request!',
-    logoUrl:
-      'https://cdn.manifold.co/providers/pdfshift/logos/2cfcefe3-ba37-4530-881a-0e1257a3c91f.png',
+    logoUrl: 'https://cdn.manifold.co/providers/pdfshift/logos/2cfcefe3-ba37-4530-881a-0e1257a3c91f.png',
     valueProps: [
       {
         body: 'Generate a fully structured, high-quality PDF document, in a few seconds only.',
@@ -591,8 +582,7 @@ const products = [
     label: 'posthook',
     name: 'Posthook',
     tagline: 'Simple, Robust Job Scheduling For Your Application',
-    logoUrl:
-      'https://cdn.manifold.co/providers/posthook/logos/0479c2e7-5bae-42b3-b8ca-5f2b2640386e.png',
+    logoUrl: 'https://cdn.manifold.co/providers/posthook/logos/0479c2e7-5bae-42b3-b8ca-5f2b2640386e.png',
     valueProps: [
       {
         body:
@@ -614,13 +604,11 @@ const products = [
         header: 'Rich Dashboard',
       },
       {
-        body:
-          'Get instantly notified when we are not able to complete a scheduled request to your application.',
+        body: 'Get instantly notified when we are not able to complete a scheduled request to your application.',
         header: 'Failure Notifications',
       },
       {
-        body:
-          'Configure the number of times Posthook retries scheduled requests and the delay between each retry.',
+        body: 'Configure the number of times Posthook retries scheduled requests and the delay between each retry.',
         header: 'Custom Retries',
       },
     ],
@@ -666,8 +654,7 @@ const products = [
     logoUrl: 'https://cdn.manifold.co/providers/timber/logos/timber.png',
     valueProps: [
       {
-        body:
-          'Simple, fast, low memory footprint, easy to use. The best logging interface in the industry.',
+        body: 'Simple, fast, low memory footprint, easy to use. The best logging interface in the industry.',
         header: 'Modern Interface',
       },
       {
@@ -683,8 +670,7 @@ const products = [
         header: '🔥 Blazing 🔥 fast search',
       },
       {
-        body:
-          'Conveniently switch between apps directly within Timber, search across all of them with ease.',
+        body: 'Conveniently switch between apps directly within Timber, search across all of them with ease.',
         header: 'Multi-app support',
       },
       {
@@ -746,8 +732,7 @@ const products = [
         header: 'Rest easy with battle-tested security',
       },
       {
-        body:
-          'When it’s time to add or remove resources, easily scale your index with no downtime.',
+        body: 'When it’s time to add or remove resources, easily scale your index with no downtime.',
         header: 'Scale with Ease',
       },
       {
@@ -763,11 +748,7 @@ const products = [
         label: 'sandbox',
         name: 'Sandbox',
         cost: 0,
-        regions: [
-          '235mhkk15ky7ha9qpu4gazrqjt2gr',
-          '235nu2c0z73hq1f9qby444nnnq1fu',
-          '235m2c51y0625vvtk6ptf55bhpkty',
-        ],
+        regions: ['235mhkk15ky7ha9qpu4gazrqjt2gr', '235nu2c0z73hq1f9qby444nnnq1fu', '235m2c51y0625vvtk6ptf55bhpkty'],
         features: [
           {
             name: 'Documents',
@@ -795,8 +776,7 @@ const products = [
     name: 'Ximilar - Custom Image Recognition',
     tagline:
       'Image classification & tagging by your labels. Powerful computer vision & machine learning with blazing speed.',
-    logoUrl:
-      'https://cdn.manifold.co/providers/ximilar/logos/c469ba54-687c-4412-9672-75fdc91d35ab.png',
+    logoUrl: 'https://cdn.manifold.co/providers/ximilar/logos/c469ba54-687c-4412-9672-75fdc91d35ab.png',
     valueProps: [
       {
         body: 'Use deep learning algorithms with the highest accuracy on the market.',
@@ -819,8 +799,7 @@ const products = [
         header: 'Scalable',
       },
       {
-        body:
-          'Ongoing improvements of the underlying machine learning algorithms. You are up-to-date',
+        body: 'Ongoing improvements of the underlying machine learning algorithms. You are up-to-date',
         header: 'Improving Constantly',
       },
     ],
