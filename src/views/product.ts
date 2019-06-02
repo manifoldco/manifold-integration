@@ -100,11 +100,11 @@ export default (attrs: RouteParams): Promise<string> => {
               <Link action="${SELECT_PRODUCT}">← Back to all services</Link>
             </Box>
             <Box display="flex">
-              <Box marginRight="2rem" display="flex" fontSize="14px" alignItems="center">
-                <Box marginRight="1.3rem">
-                  <B>Resource's name:</B>
+              <Box marginRight="1rem" display="flex" fontSize="14px" alignItems="center">
+                <Box marginRight="0.7rem">
+                  Resource name
                 </Box>
-                <Input name="resourceName" />
+                <Input name="resourceName" placeholder="messaging, logging, etc."/>
               </Box>
               <Button highlight action="${`provision-${product.label}`}">+ Create Resource</Button>
             </Box>
