@@ -175,9 +175,7 @@ export class Manifold {
         type: 'provision',
       },
     };
-    const reqURL = `${this.provisioningUrl}${routes.provisioning.operations}/${opID}`;
-    console.log('PUT ', reqURL);
-    const opRes = await fetch(reqURL, {
+    const opRes = await fetch(`${this.provisioningUrl}${routes.provisioning.operations}/${opID}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

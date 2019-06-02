@@ -1,7 +1,8 @@
 import { htm } from '@zeit/integration-utils';
-import { TEST_PROVISION, SELECT_PRODUCT } from '../constants';
+import { PROVISION, SELECT_PRODUCT } from '../constants';
 import products from '../data/products';
 import { $ } from '../utils/currency';
+import { RouteParams } from '../api/router';
 
 interface Resource {
   name: string;
@@ -29,12 +30,15 @@ const mockData: Resource[] = [
   },
 ];
 
-
-export default (user: Manifold.User) => (): Promise<string> => {
+export default async (attrs: RouteParams): Promise<string> => {
+  const user = await attrs.client.getSelf();
   console.log(user);
+
+  const provisionName = attrs.payload.clientState.provisionName;
 
   return htm`
     <Page>
+      ${provisionName && htm`<Notice type="success">Service ${provisionName} provisioned.</Notice>`}
       <Box display="flex" justifyContent="space-between" marginBottom="1rem">
         <H1>Manifold services</H1>
         <Button action="${SELECT_PRODUCT}" small highlight>+ Add a new service</>
@@ -65,7 +69,7 @@ export default (user: Manifold.User) => (): Promise<string> => {
           <H1>Provisioning test</H1>
         </FsContent>
         <FsContent>
-          <Button action="${TEST_PROVISION}">Provision Now</Button>
+          <Button action="${PROVISION}">Provision Now</Button>
         </FsContent>
       </Fieldset>
       <Link action="resource-details">View resource</Link>

@@ -1,5 +1,6 @@
-import { htm } from '@zeit/integration-utils';
 import { RouteParams } from '../api/router';
+import authenticated from './authenticated';
+import error from './error';
 
 export default async (attrs: RouteParams) => {
   const { client } = attrs;
@@ -18,27 +19,11 @@ export default async (attrs: RouteParams) => {
     } as Manifold.Provision;
     await client.provisionProduct(p, user.id);
 
-    const resources = await client.getResources();
-    console.log('resources', resources);
+    attrs.payload.clientState = { provisionName: p.name };
 
-    return htm`
-      <Page>
-        Success!
-        ${resources.map(
-          r =>
-            htm`
-    ${r.body.name} - ${r.product.name}
-      <BR/>
-              `
-        )}
-      </Page>
-`;
+    return authenticated(attrs);
   } catch (e) {
     console.error('error', e);
-    return htm`
-      <Page>
-        Failure ${e.message}
-      </Page>
-`;
+    return error('500', e.message);
   }
 };
