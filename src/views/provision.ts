@@ -1,29 +1,51 @@
+import { htm } from '@zeit/integration-utils';
+
 import { RouteParams } from '../api/router';
-import authenticated from './authenticated';
-import error from './error';
+import products from '../data/products';
 
-export default async (attrs: RouteParams) => {
-  const { client } = attrs;
+export default (user: Manifold.User) => async (attrs: RouteParams): Promise<string> => {
+  const { client, params } = attrs;
+
+  if (!params) {
+    return htm`
+      <Page>
+        <Notice type="error">Product not found</Notice>
+      </Page>
+    `;
+  }
+
+  const productLabel = params[0];
+  const product = products.find((prod: Manifold.Product): boolean => prod.label === productLabel);
+
+  if (!product) {
+    return htm`
+      <Page>
+        <Notice type="error">Product not found</Notice>
+      </Page>
+    `;
+  }
+
   try {
-    const user = await client.getSelf();
-    const p = {
-      name: `some-name-${Date.now()}`,
-      productId: '234j94djrwxapnnbyqbjtg75g111j',
-      regionId: '235mhkk15ky7ha9qpu4gazrqjt2gr',
-      planId: '2358ankfjp8k1zpau7ayphbfmhfzr',
-      features: {
-        crackers: true,
-        juice: 50,
-        sandwich: 'free',
-      },
+    const operation = {
+      product_id: product.id,
+      region_id: product.plans[0].regions[0],
+      plan_id: product.plans[0].id,
     } as Manifold.Provision;
-    await client.provisionProduct(p, user.id);
 
-    attrs.payload.clientState = { provisionName: p.name };
+    const provisionResult = await client.provisionProduct(operation, user.id);
 
-    return authenticated(attrs);
+    return htm`
+      <Page>
+        Provisioning...
+        <AutoRefresh timeout="3000" action="${`operation-${provisionResult.resource_id}`}"/>
+      </Page>
+    `;
   } catch (e) {
     console.error('error', e);
-    return error('500', e.message);
+    return htm`
+      <Page>
+        Failure ${e.message}
+      </Page>
+    `;
   }
 };

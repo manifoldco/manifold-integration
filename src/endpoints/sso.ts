@@ -3,25 +3,15 @@ import { parse as parseUrl } from 'url';
 
 import { Manifold } from '../api/manifold';
 
-const {
-  MANIFOLD_IDENTITY_URL,
-  MANIFOLD_MARKETPLACE_URL,
-  MANIFOLD_PROVISIONING_URL,
-  MANIFOLD_CONNECTOR_URL,
-} = process.env;
+const { MANIFOLD_SCHEME, MANIFOLD_HOST } = process.env;
 
-export default async function(req: IncomingMessage, res: ServerResponse): Promise<void> {
+export default async function (req: IncomingMessage, res: ServerResponse): Promise<void> {
   if (!req.url) {
     res.writeHead(500);
     return res.end('No url provided');
   }
 
-  if (
-    !MANIFOLD_IDENTITY_URL ||
-    !MANIFOLD_MARKETPLACE_URL ||
-    !MANIFOLD_PROVISIONING_URL ||
-    !MANIFOLD_CONNECTOR_URL
-  ) {
+  if (!MANIFOLD_SCHEME || !MANIFOLD_HOST ) {
     res.writeHead(500);
     return res.end('Missing configuration in the integration.');
   }
@@ -30,10 +20,8 @@ export default async function(req: IncomingMessage, res: ServerResponse): Promis
   const { resource_id, authorization } = query;
 
   const client = new Manifold({
-    identityUrl: MANIFOLD_IDENTITY_URL,
-    marketplaceUrl: MANIFOLD_MARKETPLACE_URL,
-    provisioningUrl: MANIFOLD_PROVISIONING_URL,
-    connectorUrl: MANIFOLD_CONNECTOR_URL,
+    manifoldScheme: MANIFOLD_SCHEME,
+    manifoldHost: MANIFOLD_HOST,
     bearerToken: authorization as string,
   });
 

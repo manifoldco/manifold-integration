@@ -1,12 +1,22 @@
 import { htm } from '@zeit/integration-utils';
 
+import { DASHBOARD } from '../constants';
 import { RouteParams } from '../api/router';
 import products from '../data/products';
 
 const { ROOT_URL } = process.env;
 
-export default async (params: RouteParams): Promise<string> => {
-  const resource = await params.client.getResource();
+export default async (attrs: RouteParams): Promise<string> => {
+  if (!attrs.params) {
+    return htm`
+      <Page>
+        <Notice type="error">Product not found</Notice>
+      </Page>
+    `;
+  }
+
+  const resourceId = attrs.params[0];
+  const resource = await attrs.client.getResourcesId(resourceId);
   if (!resource) {
     return htm`
       <Page>
@@ -33,7 +43,7 @@ export default async (params: RouteParams): Promise<string> => {
     `;
   }
 
-  const ssoUrl = `${ROOT_URL}/sso/${resource.id}?authorization=${params.client.bearerToken}`;
+  const ssoUrl = `${ROOT_URL}/sso/${resource.id}?authorization=${attrs.client.bearerToken}`;
 
   return htm`
     <Page>
@@ -74,7 +84,14 @@ export default async (params: RouteParams): Promise<string> => {
           </Box>
         </FsContent>
         <FsFooter>
-          <Button warning>Deprovision resource</Button>
+          <Box display="flex" justifyContent="space-between" width="100%">
+            <Box fontSize="14px">
+              <Link action="${DASHBOARD}">← Back to my resources</Link>
+            </Box>
+            <Box marginLeft="1.5rem">
+                <Button warning>Deprovision resource</Button>
+            </Box>
+          </Box>
         </FsFooter>
       </Fieldset>
     </Page>

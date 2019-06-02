@@ -58,7 +58,8 @@ declare namespace Manifold {
     id: string;
     state: string;
     body: ResourceBody;
-    product: Product;
+    product?: Product;
+    plan?: Plan;
   }
 
   interface ResourceBody {
@@ -80,10 +81,13 @@ declare namespace Manifold {
   }
 
   interface Provision {
+    resource_id: string;
+    label: string;
     name: string;
-    productId: string;
-    planId: string;
-    features: any;
-    regionId: string;
+    state: string;
+    product_id: string;
+    plan_id: string;
+    region_id: string;
+    annotations: { [s: string]: string[] };
   }
 }
