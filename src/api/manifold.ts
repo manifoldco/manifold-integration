@@ -114,6 +114,17 @@ export class Manifold {
   }
 
   async getResources(): Promise<Manifold.Resource[]> {
+    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+    });
+
+    const resPayloads = await toJSON<Manifold.Resource[]>(resRes);
+
     const opRes = await fetch(
       `${this.provisioningUrl}${routes.provisioning.operations}?is_deleted=false`,
       {
@@ -128,18 +139,7 @@ export class Manifold {
 
     const opPayloads = await toJSON<Manifold.Provision[]>(opRes);
 
-    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        authorization: `Bearer ${this.bearerToken}`,
-      },
-    });
-
-    const resPayloads = await toJSON<Manifold.Resource[]>(resRes);
-
-    return resPayloads.map((resource: Manifold.Resource): Manifold.Resource => {
+    const resources = resPayloads.map((resource: Manifold.Resource): Manifold.Resource => {
       const operation = opPayloads.filter(
         (op: Manifold.Provision) => op.state !== 'done' && op.resource_id === resource.id
       );
@@ -183,6 +183,51 @@ export class Manifold {
         plan,
       };
     });
+
+    opPayloads.filter(
+      (op: Manifold.Provision) => op.state !== 'done' && op.type === 'provision'
+    ).forEach((operation) => {
+      const resource = resources.find(res => res.id === operation.resource_id);
+
+      if (!resource) {
+        const product = products.find(p => p.id === operation.product_id);
+        if (!product) {
+          resources.push({
+            id: operation.resource_id,
+            state: 'provisioning',
+            body: {
+              ...(operation as Manifold.ResourceBody),
+            },
+          });
+          return;
+        }
+
+        const plan = product.plans.find(p => p.id === operation.plan_id);
+        if (!plan) {
+          resources.push({
+            id: operation.resource_id,
+            state: 'provisioning',
+            product,
+            body: {
+              ...(operation as Manifold.ResourceBody),
+            },
+          });
+          return;
+        }
+
+        resources.push({
+          id: operation.resource_id,
+          state: 'provisioning',
+          product,
+          plan,
+          body: {
+            ...(operation as Manifold.ResourceBody),
+          },
+        });
+      }
+    });
+
+    return resources;
   }
 
   async getResourcesId(resourceId: string): Promise<Manifold.Resource> {
