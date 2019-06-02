@@ -6,9 +6,17 @@ import unauthenticatedView from './views/unauthenticated';
 import productView from './views/product';
 import selectProductView from './views/select-product';
 import provisionView from './views/provision';
+import deprovisionView from './views/deprovision';
 import operationView from './views/operation';
 import resourceDetailsView from './views/resource-detail';
-import { PROVISION, PRODUCT_PAGE, RESOURCE_DETAILS, SELECT_PRODUCT, OPERATION } from './constants';
+import {
+  DEPROVISION,
+  PROVISION,
+  PRODUCT_PAGE,
+  RESOURCE_DETAILS,
+  SELECT_PRODUCT,
+  OPERATION,
+} from './constants';
 import { Manifold } from './api/manifold';
 import error from './views/error';
 import { Router } from './api/router';
@@ -47,6 +55,7 @@ export default withUiHook(
             [RESOURCE_DETAILS]: resourceDetailsView,
             [SELECT_PRODUCT]: selectProductView,
             [PROVISION]: provisionView(user),
+            [DEPROVISION]: deprovisionView(user),
             [OPERATION]: operationView,
           },
           client,
