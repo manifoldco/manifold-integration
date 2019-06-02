@@ -113,8 +113,10 @@ export class Manifold {
     return toJSON<Manifold.User>(response);
   }
 
-  async getResources(): Promise<Manifold.Resource[]> {
-    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}`, {
+  async getResources(configurationId: string): Promise<Manifold.Resource[]> {
+    const annotations = `annotations=zeit.co/configuration-id=${encode(configurationId)}`;
+
+    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}?${annotations}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -314,7 +316,11 @@ export class Manifold {
     return toJSON<Manifold.Credential[]>(resRes);
   }
 
-  async provisionProduct(provision: Manifold.Provision, userId: string): Promise<Manifold.Provision> {
+  async provisionProduct(
+    provision: Manifold.Provision,
+    userId: string,
+    configurationId: string
+  ): Promise<Manifold.Provision> {
     const operationId = newID('operation');
     const resourceId = newID('resource');
     const data = {
@@ -331,6 +337,9 @@ export class Manifold {
         product_id: provision.product_id,
         region_id: provision.region_id,
         resource_id: resourceId,
+        annotations: {
+          'zeit.co/configuration-id': [encode(configurationId)],
+        },
         source: 'catalog',
         state: 'provision',
         type: 'provision',

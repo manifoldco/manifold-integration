@@ -32,7 +32,7 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
       plan_id: product.plans[0].id,
     } as Manifold.Provision;
 
-    const provisionResult = await client.provisionProduct(operation, user.id);
+    const provisionResult = await client.provisionProduct(operation, user.id, attrs.payload.configurationId);
 
     return htm`
       <Page>
