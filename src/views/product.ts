@@ -95,16 +95,17 @@ export default (attrs: RouteParams): Promise<string> => {
           </Box>
         </FsContent>
         <FsFooter>
-          <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
+          <Box display="flex" justifyContent="space-between" alignItems="flex-end" width="100%">
             <Box fontSize="14px" paddingLeft="0.5rem">
               <Link action="${SELECT_PRODUCT}">← Back to all services</Link>
             </Box>
-            <Box display="flex">
-              <Box marginRight="2rem" display="flex" fontSize="14px" alignItems="center">
-                <Box marginRight="1.3rem">
-                  <B>Resource's name:</B>
+            <Box display="flex" alignItems="flex-end">
+              <Box marginRight="1rem" fontSize="14px" alignItems="center">
+                <P>Resource name</P>
+                <Box fontSize="10px">Must start with a letter and contain no spaces. Underscores and dashes allowed.</Box>
+                <Box minWidth="250px">
+                  <Input width="100%" name="resourceName" placeholder="messaging, logging, etc"/>
                 </Box>
-                <Input name="resourceName" />
               </Box>
               <Button highlight action="${`provision-${product.label}`}">+ Create Resource</Button>
             </Box>

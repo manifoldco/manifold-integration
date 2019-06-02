@@ -66,13 +66,31 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
     `;
   } catch (e) {
     console.error('error', e);
+
+    // View: invalid name
+    if (e.message === 'bad_request: Invalid name') {
+      return htm`
+        <Page>
+          <Notice type="error">
+            Resource name must start with a letter and contain no spaces. Hyphens and underscores allowed (ex:
+            <Box display="inline-block" fontFamily="Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace" fontWeight="700">my-resource</Box>
+            or
+            <Box display="inline-block" fontFamily="Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace" fontWeight="700">my_resource</Box>).
+          </Notice>
+          <Box display="flex" justifyContent="center" marginTop="1rem">
+            <Button action="${`product-${product.label}`}" secondary small>← Back to product</Link>
+          </Box>
+        </Page>
+      `;
+    }
+
     return htm`
       <Page>
         <Notice type="error">
           ${`${e.message}.`} ${supportMsg}
         </Notice>
         <Box display="flex" justifyContent="center" marginTop="1rem">
-          <Button action="${DASHBOARD}" secondary small>Back to dashboard</Link>
+          <Button action="${`product-${product.label}`}" secondary small>← Back to product</Link>
         </Box>
       </Page>
     `;
