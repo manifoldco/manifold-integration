@@ -9,20 +9,20 @@ export interface RouteParams {
   params?: string[];
 }
 
-export type RouteHandler = (params: RouteParams) => Promise<string>;
+export type RouteHandler = (params: RouteParams) => Promise<string> | string;
 
 interface Config {
   client: Manifold;
   zeitClient: ZeitClient;
   payload: UiHookPayload;
-  routes: {[s: string]: RouteHandler};
+  routes: { [s: string]: RouteHandler };
 }
 
 export class Router {
   manifoldClient: Manifold;
   zeitClient: ZeitClient;
   zeitPayload: UiHookPayload;
-  routes: {[s: string]: RouteHandler};
+  routes: { [s: string]: RouteHandler };
 
   constructor(config: Config) {
     this.manifoldClient = config.client;
@@ -32,7 +32,9 @@ export class Router {
   }
 
   route(action: string, def: RouteHandler) {
-    const route = Object.keys(this.routes).find((key: string): boolean => new RegExp(key).test(action));
+    const route = Object.keys(this.routes).find(
+      (key: string): boolean => new RegExp(key).test(action)
+    );
 
     if (!route) {
       return def({

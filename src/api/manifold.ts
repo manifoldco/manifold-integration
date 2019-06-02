@@ -1,4 +1,7 @@
 import fetch from 'node-fetch';
+import products from '../data/products';
+import { encode } from 'base32';
+import crypto from 'crypto';
 
 interface ManifoldConfig {
   identityUrl: string;
@@ -14,12 +17,36 @@ const routes = {
     self: '/v1/self',
   },
   marketplace: {
-    resource: '/v1/resources',
+    resources: '/v1/resources',
   },
   connector: {
     sso: '/v1/sso',
   },
+  provisioning: {
+    operations: '/v1/operations',
+  },
 };
+
+export function newID(typeStr: string): string {
+  const typ = getType(typeStr);
+  const id = new Uint8Array(18);
+
+  id[0] = 0x10 | typ[0]; // eslint-disable-line no-bitwise
+  id[1] = typ[1]; // eslint-disable-line prefer-destructuring
+  id.set(crypto.randomFillSync(new Uint8Array(16)), 2);
+
+  return encode(id);
+}
+
+function getType(typeStr: string): Uint8Array {
+  if (typeStr === 'resource') {
+    return new Uint8Array([0x01, 0x90]);
+  } else if (typeStr === 'operation') {
+    return new Uint8Array([0x01, 0x2c]);
+  }
+
+  throw new Error(`invalid type ${typeStr}`);
+}
 
 async function toJSON<T>(response: Response): Promise<T> {
   const payload = await response.json();
@@ -32,16 +59,24 @@ async function toJSON<T>(response: Response): Promise<T> {
 }
 
 export class Manifold {
+  manifoldScheme: string;
+  manifoldHost: string;
   identityUrl: string;
   marketplaceUrl: string;
   connectorUrl: string;
   bearerToken: string | undefined;
 
   constructor(config: ManifoldConfig) {
+    this.manifoldScheme = 'http';
+    this.manifoldHost = 'arigato.tools';
     this.identityUrl = config.identityUrl;
     this.marketplaceUrl = config.marketplaceUrl;
     this.connectorUrl = config.connectorUrl;
     this.bearerToken = config.bearerToken;
+  }
+
+  private serviceURL(svcName: string): string {
+    return `${this.manifoldScheme}://api.${svcName}.${this.manifoldHost}`;
   }
 
   async getTokensOAuth(code: string, state: string): Promise<Manifold.AuthToken> {
@@ -70,7 +105,97 @@ export class Manifold {
         authorization: `Bearer ${this.bearerToken}`,
       },
     });
+
     return toJSON<Manifold.User>(response);
+  }
+
+  async getResources(): Promise<Array<Manifold.Resource>> {
+    const marketplaceURL = this.serviceURL('marketplace');
+    const resRes = await fetch(`${marketplaceURL}${routes.marketplace.resources}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+    });
+
+    const resPayloads = await toJSON<any>(resRes);
+
+    const resources = resPayloads.map(
+      (r: any): Manifold.Resource => {
+        r.product = products.find(p => p.id === r.body['product_id']);
+        return r;
+      }
+    );
+
+    const provisioningURL = this.serviceURL('provisioning');
+    const opRes = await fetch(
+      `${provisioningURL}${routes.provisioning.operations}?is_deleted=false`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          authorization: `Bearer ${this.bearerToken}`,
+        },
+      }
+    );
+
+    const opPayloads = await toJSON<any>(opRes);
+
+    const opResources = opPayloads
+      .filter((o: any) => o.body.state !== 'done')
+      .map(
+        (o: any): Manifold.Resource => {
+          o.id = o.body.resource_id;
+          o.product = products.find(p => p.id === o.body['product_id']);
+          o.state = 'provisioning';
+          return o;
+        }
+      );
+
+    resources.push(...opResources);
+
+    return resources;
+  }
+
+  async provisionProduct(provision: Manifold.Provision, userId: string): Promise<void> {
+    const opID = newID('operation');
+    const resID = newID('resource');
+    const data = {
+      type: 'operation',
+      version: 1,
+      id: opID,
+      body: {
+        user_id: userId,
+        features: provision.features || {},
+        label: `zeit-${resID}`,
+        name: provision.name,
+        message: '',
+        plan_id: provision.planId,
+        product_id: provision.productId,
+        region_id: provision.regionId,
+        resource_id: resID,
+        source: 'catalog',
+        state: 'provision',
+        type: 'provision',
+      },
+    };
+    const provisioningURL = this.serviceURL('provisioning');
+    const reqURL = `${provisioningURL}${routes.provisioning.operations}/${opID}`;
+    console.log('PUT ', reqURL);
+    const opRes = await fetch(reqURL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    await toJSON<any>(opRes);
   }
 
   async getResource(): Promise<Manifold.Resource> {
@@ -84,7 +209,7 @@ export class Manifold {
         region_id: '235mhkk15ky7ha9qpu4gazrqjt2gr',
         annotations: {},
       },
-    };
+    } as Manifold.Resource;
   }
 
   async getSso(resourceId: string): Promise<Manifold.AuthorizationCode> {

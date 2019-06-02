@@ -56,7 +56,9 @@ declare namespace Manifold {
 
   interface Resource {
     id: string;
-    body: ResourceBody,
+    state: string;
+    body: ResourceBody;
+    product: Product;
   }
 
   interface ResourceBody {
@@ -65,15 +67,23 @@ declare namespace Manifold {
     product_id: string;
     plan_id: string;
     region_id: string;
-    annotations: {[s: string]: string[]}
+    annotations: { [s: string]: string[] };
   }
 
   interface AuthorizationCode {
     id: string;
-    body: AuthorizationCodeBody,
+    body: AuthorizationCodeBody;
   }
 
   interface AuthorizationCodeBody {
     redirect_uri: string;
+  }
+
+  interface Provision {
+    name: string;
+    productId: string;
+    planId: string;
+    features: any;
+    regionId: string;
   }
 }

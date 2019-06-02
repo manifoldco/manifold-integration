@@ -1,4 +1,82 @@
-export default [
+const devProducts = [
+  {
+    id: '234j94djrwxapnnbyqbjtg75g111j',
+    label: 'ant-hill-local',
+    name: 'Ant-Hill - Local',
+    tagline: "They're after your sweet treats.",
+    logoUrl: 'https://cdn.manifold.co/providers/degraffdb/logos/ants.png',
+    valueProps: [
+      {
+        body: "There are a lot of ants in this hill, they're hungry and have a swarm to feed.",
+        header: 'Many many ants',
+      },
+      {
+        body:
+          'With a proportiate body strength 10x the average human, these ants can lift; and because they come in smaller packages you get a fine grained conversion of dollars to lifting power.',
+        header: '10x the strength',
+      },
+      {
+        body:
+          "Maybe you're hungry, or maybe you just didn't notice them in your sandwich; either way you're taking advantage of the great dietary protein source that is ants, the crunch is an added bonus!",
+        header: 'Extra protein',
+      },
+    ],
+    tags: ['worker'],
+    plans: [
+      {
+        cost: 0,
+        features: [
+          { name: 'flavor', valueName: 'plain-black' },
+          { name: 'ants', valueName: 'plain-black-ants' },
+          { name: 'aggravated', valueName: 'false' },
+        ],
+        label: 'plain-black',
+        name: 'Plain Black',
+        regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
+        state: 'available',
+        id: '2354bwtxc7dq09fgg5cephajpyvjw',
+      },
+      {
+        cost: 0,
+        features: [
+          { name: 'flavor', valueName: 'fire-red' },
+          { name: 'ants', valueName: 'fire-red-ants' },
+          { name: 'aggravated', valueName: 'true' },
+        ],
+        label: 'fire-red',
+        name: 'Sweet and Spicy',
+        regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
+        id: '235cd4hftuwxk5wknr8x7ax93wm62',
+      },
+      {
+        cost: 500,
+        features: [
+          { name: 'flavor', valueName: 'tiger-tail' },
+          { name: 'ants', valueName: 'tiger-tail-ants' },
+          { name: 'aggravated', valueName: 'true' },
+        ],
+        label: 'tiger-tail',
+        name: 'Exotic Flavor',
+        regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
+        id: '235adhhbe44bbvxkze694q1hzgpwr',
+      },
+      {
+        cost: 2000,
+        features: [
+          { name: 'flavor', valueName: 'creamsicle' },
+          { name: 'ants', valueName: 'creamsicle-ants' },
+          { name: 'aggravated', valueName: 'false' },
+        ],
+        label: 'creamsicle',
+        name: 'Rare and Delicious',
+        regions: ['235n4f9pxf8eyraj3y159x89z6jer'],
+        id: '235a1zyn5ej2yv60xx3j1twateg9w',
+      },
+    ],
+  },
+];
+
+const products = [
   {
     // TODO: Remove this one, this is only for testing SSO on my machine (Guillaume)
     id: '234mrgjbfx5ah48ccxx7wr8c2xb8c',
@@ -777,3 +855,9 @@ export default [
     ],
   },
 ];
+
+if (process.env.NODE_ENV !== 'production') {
+  products.push(...devProducts);
+}
+
+export default products;
