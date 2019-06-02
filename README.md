@@ -9,7 +9,8 @@ Manifold integration for the ZEIT marketplace.
 Create a `.env` file with the following properties:
 
 ```env
-MANIFOLD_IDENTITY_URL=identity.arigato.tools
+MANIFOLD_SCHEME=http
+MANIFOLD_HOST=arigato.tools
 ROOT_URL=
 ZEIT_CLIENT_ID=
 ```

@@ -12,21 +12,20 @@ import { Manifold } from './api/manifold';
 import error from './views/error';
 import { Router } from './api/router';
 
-const { MANIFOLD_IDENTITY_URL, MANIFOLD_MARKETPLACE_URL, MANIFOLD_CONNECTOR_URL } = process.env;
+const { MANIFOLD_SCHEME, MANIFOLD_HOST } = process.env;
 
 export default withUiHook(
   async ({ zeitClient, payload }): Promise<string> => {
     let metadata = await zeitClient.getMetadata();
     const { action /* , projectId */ } = payload;
 
-    if (!MANIFOLD_IDENTITY_URL || !MANIFOLD_MARKETPLACE_URL || !MANIFOLD_CONNECTOR_URL) {
+    if (!MANIFOLD_SCHEME || !MANIFOLD_HOST) {
       return error('500', 'Missing configuration in the integration.');
     }
 
     const client = new Manifold({
-      identityUrl: MANIFOLD_IDENTITY_URL,
-      marketplaceUrl: MANIFOLD_MARKETPLACE_URL,
-      connectorUrl: MANIFOLD_CONNECTOR_URL,
+      manifoldScheme: MANIFOLD_SCHEME,
+      manifoldHost: MANIFOLD_HOST,
       bearerToken: metadata.manifoldToken,
     });
 
@@ -39,14 +38,14 @@ export default withUiHook(
     if (metadata.manifoldToken) {
       try {
         // Let's try to make this "are we logged in" check smarter
-        await client.getSelf();
+        const user = await client.getSelf();
 
         return new Router({
           routes: {
             [PRODUCT_PAGE]: productView,
             [RESOURCE_DETAILS]: resourceDetailsView,
             [SELECT_PRODUCT]: selectProductView,
-            [TEST_PROVISION]: testProvisionView,
+            [TEST_PROVISION]: testProvisionView(user),
           },
           client,
           payload,
