@@ -43,7 +43,12 @@ export default (attrs: RouteParams): Promise<string> => {
                 </Box>
               </Box>
               <Box marginTop="1rem">
-                <Link href="${`https://manifold.co/services/${label}`}" target="_blank">More details</Link>
+                <Link href="${`https://manifold.co/services/${label}`}" target="_blank">
+                <Button secondary small>
+                  More details
+                  <Box alignItems="center" display="inline-flex" fontSize="0.875em" height="1.375em" lineHeight="1" marginLeft="0.1em" justifyContent="center" width="1.375em">↗︎</Box>︎
+                </Button>
+                </Link>
               </Box>
             </Box>
             <Box paddingTop="1rem">
@@ -58,28 +63,30 @@ export default (attrs: RouteParams): Promise<string> => {
                 `
               )}
               <Box marginTop="2rem">
-                <H2>Select Plan</H2>
                 ${plans.map(
                   plan => htm`
                     <Fieldset>
                       <FsContent>
-                        <H2>${plan.name}</H2>
+                        <Box fontSize="0.75rem" textTransform="uppercase" fontWeight="500" letterSpacing="1px" color="#777">
+                          Plan
+                        </Box>
+                        <H2>
+                          ${plan.name}
+                          <Box display="inline" color="#777">${$(
+                            plan.cost
+                          )}<Box display="inline" marginLeft="-0.25em">/mo</Box></Box>
+                        </H2>
                         ${plan.features.map(
                           (feature, index) => htm`
                             <Box backgroundColor="${
                               index % 2 === 0 ? '#fafafa' : 'transparent'
-                            }" display="grid" gridTemplateColumns="1fr 1fr" paddingBottom="0.25rem" paddingTop="0.25rem">
+                            }" display="grid" gridTemplateColumns="1fr 1fr" padding="0.25rem" paddingTop="0.25rem">
                                 <B>${feature.name}</B>
                               <Box>${feature.valueName}</Box>
                             </Box>
                           `
                         )}
                       </FsContent>
-                      <FsFooter>
-                        <Box display="flex" fontSize="18px" justifyContent="flex-end" width="100%">
-                          ${$(plan.cost)}
-                        </Box>
-                      </FsFooter>
                     </Fieldset>
                   `
                 )}

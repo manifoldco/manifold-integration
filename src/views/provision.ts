@@ -1,7 +1,10 @@
 import { htm } from '@zeit/integration-utils';
 
 import { RouteParams } from '../api/router';
+import { DASHBOARD } from '../constants';
 import products from '../data/products';
+
+const supportMsg = htm`Contact <B>support@manifold.co</B> if the problem persists.`;
 
 export default (user: Manifold.User) => async (attrs: RouteParams): Promise<string> => {
   const { client, params, payload } = attrs;
@@ -9,7 +12,10 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
   if (!params || !payload.projectId) {
     return htm`
       <Page>
-        <Notice type="error">Invalid parameters</Notice>
+        <Notice type="error">Invalid parameters. ${supportMsg}</Notice>
+        <Box display="flex" justifyContent="center" marginTop="1rem">
+          <Button action="${DASHBOARD}" secondary small>Back to dashboard</Link>
+        </Box>
       </Page>
     `;
   }
@@ -20,7 +26,10 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
   if (!product) {
     return htm`
       <Page>
-        <Notice type="error">Product not found</Notice>
+        <Notice type="error">Product not found. ${supportMsg}</Notice>
+        <Box display="flex" justifyContent="center" marginTop="1rem">
+          <Button action="${DASHBOARD}" secondary small>Back to dashboard</Link>
+        </Box>>
       </Page>
     `;
   }
@@ -41,7 +50,9 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
 
     return htm`
       <Page>
-        Provisioning...
+        <Notice type="message">
+          Provisioning…
+        </Notice>
         <AutoRefresh timeout="3000" action="${`operation-${provisionResult.resource_id}`}"/>
       </Page>
     `;
@@ -49,7 +60,12 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
     console.error('error', e);
     return htm`
       <Page>
-        Failure ${e.message}
+        <Notice type="error">
+          ${`${e.message}.`} ${supportMsg}
+        </Notice>
+        <Box display="flex" justifyContent="center" marginTop="1rem">
+          <Button action="${DASHBOARD}" secondary small>Back to dashboard</Link>
+        </Box>
       </Page>
     `;
   }

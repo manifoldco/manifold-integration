@@ -22,7 +22,9 @@ export default async (attrs: RouteParams): Promise<string> => {
 
     return htm`
     <Page>
-      Success!
+      <Box marginBottom="1rem" backgroundColor="#fff" border="solid rgb(234, 234, 234) 1px" borderRadius="0.4rem" padding="0.5rem 1rem">
+        Success!
+      </Box>
       <AutoRefresh timeout="3000" action="${`resource-details-${resource.id}`}"/>
     </Page>
   `;
@@ -30,7 +32,9 @@ export default async (attrs: RouteParams): Promise<string> => {
 
   return htm`
     <Page>
-      Provisioning...
+      <Notice type="message">
+        Provisioning…
+      </Notice>
       <AutoRefresh timeout="3000" action="${`operation-${resource.id}`}"/>
     </Page>
   `;

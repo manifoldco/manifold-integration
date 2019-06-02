@@ -30,7 +30,9 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
 
     return htm`
       <Page>
-        Deprovisioning...
+        <Notice type="message">
+          Deprovisioning…
+        </Notice>
         <AutoRefresh timeout="3000" action="discovery"/>
       </Page>
     `;
@@ -38,7 +40,9 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
     console.error('error', e);
     return htm`
       <Page>
-        Failure ${e.message}
+        <Notice type="error">
+          ${e.message}
+        </Notice>
       </Page>
     `;
   }
