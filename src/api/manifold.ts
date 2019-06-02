@@ -6,6 +6,7 @@ import crypto from 'crypto';
 interface ManifoldConfig {
   identityUrl: string;
   marketplaceUrl: string;
+  provisioningUrl: string;
   connectorUrl: string;
   bearerToken: string | undefined;
 }
@@ -59,24 +60,18 @@ async function toJSON<T>(response: Response): Promise<T> {
 }
 
 export class Manifold {
-  manifoldScheme: string;
-  manifoldHost: string;
   identityUrl: string;
   marketplaceUrl: string;
+  provisioningUrl: string;
   connectorUrl: string;
   bearerToken: string | undefined;
 
   constructor(config: ManifoldConfig) {
-    this.manifoldScheme = 'http';
-    this.manifoldHost = 'arigato.tools';
     this.identityUrl = config.identityUrl;
     this.marketplaceUrl = config.marketplaceUrl;
+    this.provisioningUrl = config.provisioningUrl;
     this.connectorUrl = config.connectorUrl;
     this.bearerToken = config.bearerToken;
-  }
-
-  private serviceURL(svcName: string): string {
-    return `${this.manifoldScheme}://api.${svcName}.${this.manifoldHost}`;
   }
 
   async getTokensOAuth(code: string, state: string): Promise<Manifold.AuthToken> {
@@ -110,8 +105,7 @@ export class Manifold {
   }
 
   async getResources(): Promise<Array<Manifold.Resource>> {
-    const marketplaceURL = this.serviceURL('marketplace');
-    const resRes = await fetch(`${marketplaceURL}${routes.marketplace.resources}`, {
+    const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -129,9 +123,8 @@ export class Manifold {
       }
     );
 
-    const provisioningURL = this.serviceURL('provisioning');
     const opRes = await fetch(
-      `${provisioningURL}${routes.provisioning.operations}?is_deleted=false`,
+      `${this.provisioningUrl}${routes.provisioning.operations}?is_deleted=false`,
       {
         method: 'GET',
         headers: {
@@ -182,8 +175,7 @@ export class Manifold {
         type: 'provision',
       },
     };
-    const provisioningURL = this.serviceURL('provisioning');
-    const reqURL = `${provisioningURL}${routes.provisioning.operations}/${opID}`;
+    const reqURL = `${this.provisioningUrl}${routes.provisioning.operations}/${opID}`;
     console.log('PUT ', reqURL);
     const opRes = await fetch(reqURL, {
       method: 'PUT',

@@ -12,20 +12,31 @@ import { Manifold } from './api/manifold';
 import error from './views/error';
 import { Router } from './api/router';
 
-const { MANIFOLD_IDENTITY_URL, MANIFOLD_MARKETPLACE_URL, MANIFOLD_CONNECTOR_URL } = process.env;
+const {
+  MANIFOLD_IDENTITY_URL,
+  MANIFOLD_MARKETPLACE_URL,
+  MANIFOLD_PROVISIONING_URL,
+  MANIFOLD_CONNECTOR_URL,
+} = process.env;
 
 export default withUiHook(
   async ({ zeitClient, payload }): Promise<string> => {
     let metadata = await zeitClient.getMetadata();
     const { action /* , projectId */ } = payload;
 
-    if (!MANIFOLD_IDENTITY_URL || !MANIFOLD_MARKETPLACE_URL || !MANIFOLD_CONNECTOR_URL) {
+    if (
+      !MANIFOLD_IDENTITY_URL ||
+      !MANIFOLD_MARKETPLACE_URL ||
+      !MANIFOLD_PROVISIONING_URL ||
+      !MANIFOLD_CONNECTOR_URL
+    ) {
       return error('500', 'Missing configuration in the integration.');
     }
 
     const client = new Manifold({
       identityUrl: MANIFOLD_IDENTITY_URL,
       marketplaceUrl: MANIFOLD_MARKETPLACE_URL,
+      provisioningUrl: MANIFOLD_PROVISIONING_URL,
       connectorUrl: MANIFOLD_CONNECTOR_URL,
       bearerToken: metadata.manifoldToken,
     });
