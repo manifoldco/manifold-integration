@@ -38,7 +38,8 @@ export default withUiHook(
 
     if (metadata.manifoldToken) {
       try {
-        const user = await client.getSelf();
+        // Let's try to make this "are we logged in" check smarter
+        await client.getSelf();
 
         return new Router({
           routes: {
@@ -50,7 +51,7 @@ export default withUiHook(
           client,
           payload,
           zeitClient,
-        }).route(action, authenticatedView(user));
+        }).route(action, authenticatedView);
       } catch (err) {
         delete metadata.manifoldToken;
         await zeitClient.setMetadata(metadata);

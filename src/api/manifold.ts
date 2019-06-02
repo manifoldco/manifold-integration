@@ -73,18 +73,30 @@ export class Manifold {
     return toJSON<Manifold.User>(response);
   }
 
-  async getResource(): Promise<Manifold.Resource> {
-    return {
-      id: '2688v5x89fmx3y6ec79z7buvpp3yc',
-      body: {
-        name: 'Test',
-        label: 'test',
-        product_id: '234mrgjbfx5ah48ccxx7wr8c2xb8c',
-        plan_id: '235auzvmuuxhp93ry864bgbpfygxe',
-        region_id: '235mhkk15ky7ha9qpu4gazrqjt2gr',
-        annotations: {},
+  async getResourcesId(resourceId: string): Promise<Manifold.Resource> {
+    const response = await fetch(`${this.marketplaceUrl}${routes.marketplace.resource}/${resourceId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
       },
-    };
+    });
+
+    return toJSON<Manifold.Resource>(response);
+  }
+
+  async getResources(): Promise<Manifold.Resource[]> {
+    const response = await fetch(`${this.marketplaceUrl}${routes.marketplace.resource}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: `Bearer ${this.bearerToken}`,
+      },
+    });
+
+    return toJSON<Manifold.Resource[]>(response);
   }
 
   async getSso(resourceId: string): Promise<Manifold.AuthorizationCode> {
