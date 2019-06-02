@@ -5,42 +5,35 @@ import { SELECT_PRODUCT } from '../constants';
 import { $ } from '../utils/currency';
 
 export default async (attrs: RouteParams): Promise<string> => {
-  const resources = await attrs.client.getResources(attrs.payload.configurationId);
+  const { payload, client } = attrs;
+  const resources = payload.projectId ? await client.getResources(payload.configurationId, payload.projectId) : [];
 
-  const { provisionName } = attrs.payload.clientState;
+  const { provisionName } = payload.clientState;
 
   let notice = '';
   if (provisionName) {
     notice = htm`<Notice type="success">Service ${provisionName} provisioned.</Notice>`;
   }
 
-  return htm`
-    <Page>
-      ${notice}
-      <Box display="flex" justifyContent="space-between" marginBottom="1rem">
-        <H1>Manifold services</H1>
-        <Button action="${SELECT_PRODUCT}" small highlight>+ Add a new service</Button>
-      </Box>
-      ${
-        !resources.length
-          ? htm`
+  const resourcesDisplay = !resources.length
+    ? htm`
         <Box marginBottom="1rem">
-          <Notice message>
+          <Notice type="message">
             You have no resource, yet. Click on "Add a new service" to provision one!
           </Notice>
         </Box>
       `
-          : resources.map(
-              (resource: Manifold.Resource): string => {
-                let button = htm`<Button small action="${`resource-details-${resource.id}`}">View resource</Button>`;
+    : resources.map(
+        (resource: Manifold.Resource): string => {
+          let button = htm`<Button small action="${`resource-details-${resource.id}`}">View resource</Button>`;
 
-                if (resource.state === 'provisioning') {
-                  button = htm`<Button small disabled>Preparing...</Button>`;
-                } else if (resource.state === 'deprovisioning') {
-                  button = htm`<Button small disabled>Deprovisioning...</Button>`;
-                }
+          if (resource.state === 'provisioning') {
+            button = htm`<Button small disabled>Preparing...</Button>`;
+          } else if (resource.state === 'deprovisioning') {
+            button = htm`<Button small disabled>Deprovisioning...</Button>`;
+          }
 
-                return htm`
+          return htm`
           <Box marginBottom="1rem">
             <Fieldset>
               <FsContent>
@@ -66,9 +59,24 @@ export default async (attrs: RouteParams): Promise<string> => {
             </Fieldset>
           </Box>
         `;
-              }
-            )
-      }
+        }
+      );
+
+  return htm`
+    <Page>
+      ${notice}
+      <Box display="flex" justifyContent="space-between" marginBottom="1rem">
+        <H1>Manifold services</H1>
+        <ProjectSwitcher />
+        <Button action="${SELECT_PRODUCT}" small highlight disabled="${payload.projectId ? 'false' : 'true'}">+ Add a new service</Button>
+      </Box>
+      ${payload.projectId ? resourcesDisplay : htm`
+        <Box marginBottom="1rem">
+          <Notice type="message">
+            Please select a project to get started with Manifold.
+          </Notice>
+        </Box>
+      `}
     </Page>
   `;
 };

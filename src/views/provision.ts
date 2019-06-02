@@ -4,12 +4,12 @@ import { RouteParams } from '../api/router';
 import products from '../data/products';
 
 export default (user: Manifold.User) => async (attrs: RouteParams): Promise<string> => {
-  const { client, params } = attrs;
+  const { client, params, payload } = attrs;
 
-  if (!params) {
+  if (!params || !payload.projectId) {
     return htm`
       <Page>
-        <Notice type="error">Product not found</Notice>
+        <Notice type="error">Invalid parameters</Notice>
       </Page>
     `;
   }
@@ -32,7 +32,12 @@ export default (user: Manifold.User) => async (attrs: RouteParams): Promise<stri
       plan_id: product.plans[0].id,
     } as Manifold.Provision;
 
-    const provisionResult = await client.provisionProduct(operation, user.id, attrs.payload.configurationId);
+    const provisionResult = await client.provisionProduct(
+      operation,
+      user.id,
+      payload.configurationId,
+      payload.projectId
+    );
 
     return htm`
       <Page>

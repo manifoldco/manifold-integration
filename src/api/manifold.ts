@@ -113,8 +113,10 @@ export class Manifold {
     return toJSON<Manifold.User>(response);
   }
 
-  async getResources(configurationId: string): Promise<Manifold.Resource[]> {
-    const annotations = `annotations=zeit.co/configuration-id=${encode(configurationId)}`;
+  async getResources(configurationId: string, projectId: string): Promise<Manifold.Resource[]> {
+    const annotations = `annotations=zeit.co/configuration-id=${encode(
+      configurationId
+    )}&annotations=zeit.co/project-id=${encode(projectId)}`;
 
     const resRes = await fetch(`${this.marketplaceUrl}${routes.marketplace.resources}?${annotations}`, {
       method: 'GET',
@@ -319,7 +321,8 @@ export class Manifold {
   async provisionProduct(
     provision: Manifold.Provision,
     userId: string,
-    configurationId: string
+    configurationId: string,
+    projectId: string
   ): Promise<Manifold.Provision> {
     const operationId = newID('operation');
     const resourceId = newID('resource');
@@ -339,6 +342,7 @@ export class Manifold {
         resource_id: resourceId,
         annotations: {
           'zeit.co/configuration-id': [encode(configurationId)],
+          'zeit.co/project-id': [encode(projectId)],
         },
         source: 'catalog',
         state: 'provision',
