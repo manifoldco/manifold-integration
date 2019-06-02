@@ -1,6 +1,6 @@
 declare namespace Manifold {
   interface Error {
-    message: string
+    message: string;
   }
 
   type Tag = string;
@@ -35,23 +35,29 @@ declare namespace Manifold {
     features: ProductFeatures[];
   }
 
+  interface Resource {
+    name: string;
+    plan: Plan;
+    product: Product;
+  }
+
   interface AuthToken {
     id: string;
-    body: AuthTokenBody,
+    body: AuthTokenBody;
   }
 
   interface AuthTokenBody {
-    token: string
+    token: string;
   }
 
   interface User {
     id: string;
-    body: UserBody,
+    body: UserBody;
   }
 
   interface UserBody {
-    name: string
-    email: string
+    name: string;
+    email: string;
   }
 
   interface Resource {
