@@ -10,31 +10,43 @@ export default async (attrs: RouteParams): Promise<string> => {
 
   const { provisionName } = attrs.payload.clientState;
 
+  let notice = '';
+  if (provisionName) {
+    notice = htm`<Notice type="success">Service ${provisionName} provisioned.</Notice>`;
+  }
+
   return htm`
     <Page>
-      ${provisionName && htm`<Notice type="success">Service ${provisionName} provisioned.</Notice>`}
+      ${notice}
       <Box display="flex" justifyContent="space-between" marginBottom="1rem">
         <H1>Manifold services</H1>
         <Button action="${SELECT_PRODUCT}" small highlight>+ Add a new service</Button>
       </Box>
-      ${!resources.length ? htm`
+      ${
+        !resources.length
+          ? htm`
         <Box marginBottom="1rem">
           <Notice message>
             You have no resource, yet. Go <Link action="${SELECT_PRODUCT}">provision one!</Link>
           </Notice>
         </Box>
-      ` : resources.map((resource: Manifold.Resource) => {
-        const product = products.find((prod: Manifold.Product): boolean => prod.id === resource.body.product_id);
-        if (!product) {
-          return '';
-        }
+      `
+          : resources.map((resource: Manifold.Resource) => {
+              const product = products.find(
+                (prod: Manifold.Product): boolean => prod.id === resource.body.product_id
+              );
+              if (!product) {
+                return '';
+              }
 
-        const plan = product.plans.find((p: Manifold.Plan): boolean => p.id === resource.body.plan_id);
-        if (!plan) {
-          return '';
-        }
+              const plan = product.plans.find(
+                (p: Manifold.Plan): boolean => p.id === resource.body.plan_id
+              );
+              if (!plan) {
+                return '';
+              }
 
-        return htm`
+              return htm`
           <Box marginBottom="1rem">
             <Fieldset>
               <FsContent>
@@ -56,7 +68,8 @@ export default async (attrs: RouteParams): Promise<string> => {
             </Fieldset>
           </Box>
         `;
-      })}
+            })
+      }
     </Page>
   `;
 };
