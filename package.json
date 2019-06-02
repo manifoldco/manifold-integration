@@ -2,7 +2,7 @@
   "name": "zeit-manifold-integration",
   "scripts": {
     "dev": "manifold run -- npx nodemon --watch src/views -e ts --exec 'now dev .'",
-    "deploy": "manifold run -- now -e ROOT_URL -e ZEIT_CLIENT_ID -e MANIFOLD_OAUTH_URL",
+    "deploy": "now --target=production",
     "format": "prettier --write --ignore-path .gitignore \"src/**/*.ts\"",
     "lint": "eslint 'src/**/*.{js,ts}'"
   },
