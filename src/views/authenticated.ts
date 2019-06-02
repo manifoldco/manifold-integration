@@ -70,7 +70,7 @@ export default async (attrs: RouteParams): Promise<string> => {
   return htm`
     <Page>
       ${notice}
-        <Box display="flex" justifyContent="space-between" marginBottom="1rem">
+      <Box display="flex" justifyContent="space-between" marginBottom="1rem">
         <H1>Manifold services</H1>
         <ProjectSwitcher />
         <Button action="${SELECT_PRODUCT}" small highlight disabled="${
