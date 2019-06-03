@@ -1,9 +1,10 @@
 {
   "name": "manifold-integration",
-  "alias": "manifold-integration.zeit.sh",
+  "alias": "manifold-integration.now.sh",
+  "scope": "manifold",
   "version": 2,
   "builds": [
-    { "src": "src", "use": "@now/node" },
+    { "src": "src/index.ts", "use": "@now/node" },
     { "src": "src/endpoints/oauth.ts", "use": "@now/node" },
     { "src": "src/endpoints/sso.ts", "use": "@now/node" }
   ],
@@ -13,6 +14,10 @@
     { "src": "/sso/(?<id>[^/]+)", "dest": "src/endpoints/sso.ts?resource_id=$id" }
   ],
   "env": {
-    "NODE_ENV": "development"
+    "NODE_ENV": "development",
+    "ROOT_URL": "@zeit-root-url",
+    "MANIFOLD_SCHEME": "@zeit-manifold-scheme",
+    "MANIFOLD_HOST": "@zeit-manifold-host",
+    "ZEIT_CLIENT_ID": "@zeit-client-id"
   }
 }
