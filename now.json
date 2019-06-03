@@ -14,7 +14,7 @@
     { "src": "/sso/(?<id>[^/]+)", "dest": "src/endpoints/sso.ts?resource_id=$id" }
   ],
   "env": {
-    "NODE_ENV": "production",
+    "NODE_ENV": "development",
     "ROOT_URL": "@zeit-root-url",
     "MANIFOLD_SCHEME": "@zeit-manifold-scheme",
     "MANIFOLD_HOST": "@zeit-manifold-host",

@@ -1,7 +1,7 @@
 {
   "name": "zeit-manifold-integration",
   "scripts": {
-    "dev": "manifold run -- npx nodemon --watch src/views -e ts --exec 'now dev .'",
+    "dev": "npx nodemon --watch src/views -e ts --exec 'now dev .'",
     "deploy": "now --target=production",
     "format": "prettier --write --ignore-path .gitignore \"src/**/*.ts\"",
     "lint": "eslint 'src/**/*.{js,ts}'"

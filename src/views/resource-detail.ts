@@ -7,27 +7,10 @@ import products from '../data/products';
 
 // const { ROOT_URL } = process.env;
 
-const mockData = [
-  {
-    body: {
-      values: {
-        SECRET_1: 'AHTNOUCRC<USHURCORUSHOETUWOHKRCH<URCH',
-        SECRET_2: 'AHTNOUCRC<USHURCORUSHOETUWOHKRCH<URCH',
-      },
-    },
-  },
-  {
-    body: {
-      values: {
-        SECRET_3: 'AHTNOUCRC<USHURCORUSHOETUWOHKRCH<URCH',
-        SECRET_4: 'AHTNOUCRC<USHURCORUSHOETUWOHKRCH<URCH',
-      },
-    },
-  },
-];
-
 export default async (attrs: RouteParams): Promise<string> => {
-  if (!attrs.params) {
+  const { params, client } = attrs;
+
+  if (!params) {
     return htm`
       <Page>
         <Notice type="error">Product not found</Notice>
@@ -35,8 +18,8 @@ export default async (attrs: RouteParams): Promise<string> => {
     `;
   }
 
-  const resourceId = attrs.params[0];
-  const resource = await attrs.client.getResourcesId(resourceId);
+  const resourceId = params[0];
+  const resource = await client.getResourcesId(resourceId);
   if (!resource) {
     return htm`
       <Page>
@@ -62,6 +45,15 @@ export default async (attrs: RouteParams): Promise<string> => {
       </Page>
     `;
   }
+
+  const credentials = await client.getCredentials([resourceId]);
+  const credentialsValuePair: { env: {[s: string]: string} } = { env: {} };
+  credentials.forEach(cred => {
+    const { values } = cred.body;
+    Object.keys(values).forEach(val => {
+      credentialsValuePair.env[val] = `manifold_${val.toLowerCase()}`;
+    });
+  });
 
   /*
   const ssoUrl = `${ROOT_URL}/sso/${resource.id}?authorization=${attrs.client.bearerToken}`;
@@ -112,19 +104,11 @@ export default async (attrs: RouteParams): Promise<string> => {
                     )}
                 </FsContent>
               </Fieldset>
-              <H2>Credentials</H2>
-              <Box backgroundColor="#331936" backgroundImage="linearGradient(to bottom right, #192348, #4b1125)" color="#fff" borderRadius="0.25rem" fontFamily="Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace" fontSize="14px" padding="1rem">
-                # ${resource.body.name}
-                <BR />
-                ${mockData.map(
-                  ({ body }) => htm`
-                    ${Object.entries(body.values).map(
-                      ([key, value]) => htm`
-                      <BR />${key}=${value}
-                    `
-                    )}
-                `
-                )}
+              <H2>now.json Environment Config</H2>
+              <Box backgroundColor="#331936" backgroundImage="linearGradient(to bottom right, #192348, #4b1125)" color="#fff">
+                <Code>
+                  ${JSON.stringify(credentialsValuePair, null, 2)}
+                </Code>
               </Box>
             </Box>
           </Box>
