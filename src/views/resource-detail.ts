@@ -51,7 +51,7 @@ export default async (attrs: RouteParams): Promise<string> => {
   credentials.forEach(cred => {
     const { values } = cred.body;
     Object.keys(values).forEach(val => {
-      credentialsValuePair.env[val] = `manifold_${val.toLowerCase()}`;
+      credentialsValuePair.env[val] = `@manifold_${val.toLowerCase()}`;
     });
   });
 
