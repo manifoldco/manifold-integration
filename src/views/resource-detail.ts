@@ -105,7 +105,7 @@ export default async (attrs: RouteParams): Promise<string> => {
                 </FsContent>
               </Fieldset>
               <H2>now.json Environment Config</H2>
-              <Box backgroundColor="#331936" backgroundImage="linearGradient(to bottom right, #192348, #4b1125)" color="#fff">
+              <Box backgroundColor="#331936" backgroundImage="linearGradient(to bottom right, #192348, #4b1125)" color="#fff" borderRadius="0.5rem" overflow="hidden">
                 <Code>
                   ${JSON.stringify(credentialsValuePair, null, 2)}
                 </Code>
