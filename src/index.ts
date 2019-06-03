@@ -32,7 +32,10 @@ export default withUiHook(
     });
 
     if (!metadata.manifoldToken && payload.query.code) {
-      await completeOAuth(payload, zeitClient, client, metadata);
+      const thrownError = await completeOAuth(payload, zeitClient, client, metadata);
+      if (thrownError) {
+        return error('500', thrownError);
+      }
       metadata = await zeitClient.getMetadata();
       client.bearerToken = metadata.manifoldToken;
     }
